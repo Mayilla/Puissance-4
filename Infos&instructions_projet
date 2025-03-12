@@ -5,3 +5,18 @@ Groupe : Maya, Kinga, Rehan, Loïs
 Etapes / points importants :
     - création des fonctions pour déroulement du jeu (à détailler)
     - création de l'interface graphique (à détailler)
+
+# Chose à prendre en compte/faire : 
+
+    - Mode à 2 joueur 
+    - Sauvegarde et chargement d’une partie en cours 
+    - Bouton revenir en arrière/ annule coup
+    - Joueur qui débute la partie = choisi au hasard mais alterner joueur qui commence a chaque fois les joueurs posent 
+        un jeton dans la grille qui tombe jusqu'à toucher le fond ou un autre jeton 1er avec 4 jetons en diagonale, 
+        verticalement ou horizontalement alignés gagne la manche // Match nul si grille pleine mais pas d'alignement
+    - Faire des parties/sets a “n” manche = gagnant après un certain nombre de manche
+    - Interface graphique / Menu 
+    - Possibilité de changer les paramètres de la grille / nombre de jetons à aligner pour gagner 
+    - (Réfléchir à AI / robot contre qui se battre)
+
+# Répartition du travail : (à voir ensemble)
