@@ -20,3 +20,27 @@ Etapes / points importants :
     - (Réfléchir à AI / robot contre qui se battre)
 
 # Répartition du travail : (à voir ensemble)
+
+# **Pour l'interface :** 
+
+- Menu/ page d'accueil (deux boutons milieu)
+- page du règles jeux
+- page de réglage/parametre (son du jeux option)
+- dans la page du jeux : 
+    - jetons personnalisés
+    - grille de base 
+    - Score en haut de la page 
+    - Afficher le nom du joueur qui doit jouer
+
+# **Pour le gameplay :**
+
+- algo bouton qui tombe/glisse dans la bonne case (à voir si possible avec grid)
+- algo qui vérifie bien que il y a un alignement de 4 jetons 
+- alternance des joueurs
+- prise en compte du score 
+- paramètres de la grille
+- colonne/boutons qui est la case afin de cliquer pour l'utilisateur
+- page de félicitation si gagner/perdue avec boutons relancer la partie/menu/ou quitter
+
+
+
