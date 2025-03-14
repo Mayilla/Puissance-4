@@ -7,8 +7,13 @@ fenetre_accueil.title("Accueil")
 
 # Contenu fenêtre accueil
 text_principal = tk.Label(fenetre_accueil, text = "Bienvenue sur notre jeu de puissance 4 !")
-text_principal.grid(row = 0, column = 1)
+text_principal.grid(row = 0, column = 0)
 
+bouton_jouer = tk.Button(fenetre_accueil, text = "Jouer")
+bouton_jouer.grid(row = 1, column = 0)
+
+bouton_reglages = tk.Button(fenetre_accueil, text = "⚙️")
+bouton_reglages.grid(row = 0, column = 1)
 
 
 # On affiche la fenêtre
