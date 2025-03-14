@@ -20,10 +20,20 @@ Etapes / points importants :
     - (Réfléchir à AI / robot contre qui se battre)
 
 # Répartition du travail : (à voir ensemble)
+(tout le monde touche a tout, soit division en 4 partie : 2 interface et 2 algorithme/code)
+
+- chacun créer une page (1page/4)
+    - Kinga : Menu du jeux + 
+    - Lois : Page de parametres +
+    - Rehan : Règle de jeux +
+    - Maya : Grille de jeux + 
 
 # **Pour l'interface :** 
 
+- Chosir un nom de jeux (idée Rehan = "Puissance-X")
 - Menu/ page d'accueil (deux boutons milieu)
+- taille du canvas
+- choix des couleurs 
 - page du règles jeux
 - page de réglage/parametre (son du jeux option)
 - dans la page du jeux : 
@@ -31,6 +41,7 @@ Etapes / points importants :
     - grille de base 
     - Score en haut de la page 
     - Afficher le nom du joueur qui doit jouer
+
 
 # **Pour le gameplay :**
 
@@ -41,6 +52,7 @@ Etapes / points importants :
 - paramètres de la grille
 - colonne/boutons qui est la case afin de cliquer pour l'utilisateur
 - page de félicitation si gagner/perdue avec boutons relancer la partie/menu/ou quitter
+- choisir nombre de manche/ nombre de partie gagnante/ menu déroulant
 
 
 
