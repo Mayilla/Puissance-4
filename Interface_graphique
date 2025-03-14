@@ -1,0 +1,15 @@
+# Code de l'interface graphique
+import tkinter as tk
+
+# Création fenêtre accueil
+fenetre_accueil = tk.Tk()
+fenetre_accueil.title("Accueil")
+
+# Contenu fenêtre accueil
+text_principal = tk.Label(fenetre_accueil, text = "Bienvenue sur notre jeu de puissance 4 !")
+text_principal.grid(row = 0, column = 1)
+
+
+
+# On affiche la fenêtre
+fenetre_accueil.mainloop()
