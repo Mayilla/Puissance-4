@@ -1,0 +1,97 @@
+# Code de la fenêtre des paramètres
+
+import tkinter as tk
+from PIL import Image, ImageTk
+import numpy as np
+
+
+# Création de la fenêtre
+fenetre_parametres = tk.Tk()
+fenetre_parametres.geometry("1300x700")
+fenetre_parametres.title("Paramètres")
+
+# Plein écran
+fenetre_parametres.state('zoomed')
+
+# Fond de la fenêtre
+    # Charger l'image de fond
+fond_image = Image.open("Fond(4).png")
+fond_photo = ImageTk.PhotoImage(fond_image)
+
+    # Créer le label pour l'image de fond
+label_fond = tk.Label(fenetre_parametres, image=fond_photo)
+label_fond.place(x=0, y=0, relwidth=1, relheight=1)
+
+
+# Fonctions de commande
+    # Fermer la fenêtre
+def quitter():
+    fenetre_parametres.destroy()
+
+
+
+# Contenu fenêtre des paramètres
+text_principal = tk.Label(fenetre_parametres, text = "Paramètres", font = ("Helvetica", 22, "bold"))
+text_principal.place(relx=0.5, y=70, anchor="center")
+
+    # Texte pour le choix de la grille
+text_grille = tk.Label(fenetre_parametres, text = "Thème de la grille :", font = ("Helvetica", 15, "bold"))
+text_grille.place(x = 70, y = 130)
+
+        # Boutons pour le choix de la grille
+grille_bleue = Image.open("Thème bleu grille.png")
+grille_bleue = ImageTk.PhotoImage(grille_bleue)
+bouton_grille1 = tk.Button(fenetre_parametres, text = "Grille 1", width=110, height=70, image=grille_bleue, compound="center")
+bouton_grille1.place(x = 180, y = 170)
+
+grille_bois = Image.open("Thème bois grille.png")
+grille_bois = ImageTk.PhotoImage(grille_bois)
+bouton_grille2 = tk.Button(fenetre_parametres, text = "Grille 2", width = 110, height = 70, image = grille_bois, compound = "center")
+bouton_grille2.place(x = 380, y = 170)
+
+grille_enfants = Image.open("Thème enfants grille.png")
+grille_enfants = ImageTk.PhotoImage(grille_enfants)
+bouton_grille3 = tk.Button(fenetre_parametres, text = "Grille 3", width = 110, height = 70, image = grille_enfants, compound = "center")
+bouton_grille3.place(x = 580, y = 170)
+
+grille_nature = Image.open("Thème nature grille.png")
+grille_nature = ImageTk.PhotoImage(grille_nature)
+bouton_grille4 = tk.Button(fenetre_parametres, text = "Grille 4", width = 110, height = 70, image = grille_nature, compound = "center")
+bouton_grille4.place(x = 780, y = 170)
+
+grille_game = Image.open("Thème game grille.png")
+grille_game = ImageTk.PhotoImage(grille_game)
+bouton_grille5 = tk.Button(fenetre_parametres, text = "Grille 5", width = 110, height = 70, image = grille_game, compound = "center")
+bouton_grille5.place(x = 980, y = 170)
+
+    # Texte pour le choix des jetons
+text_jetons = tk.Label(fenetre_parametres, text = "Thème des jetons :", font = ("Helvetica", 15, "bold"))
+text_jetons.place(x = 70, y = 280)
+
+        # Bouttons pour le choix des jetons
+jetons_fleur_rose = Image.open("Thème fleur rose jetons.png")
+jetons_fleur_rose = ImageTk.PhotoImage(jetons_fleur_rose)
+bouton_jetons1 = tk.Button(fenetre_parametres, text = "Jetons 1", width = 100, height = 100, image = jetons_fleur_rose, compound = "center", bd = 0, highlightthickness = 0, bg = 'red')
+bouton_jetons1.place(x = 180, y = 320)
+
+jetons_fleur_blanche = Image.open("Thème fleur blanche jetons.png")
+jetons_fleur_blanche = ImageTk.PhotoImage(jetons_fleur_blanche)
+bouton_jetons2 = tk.Button(fenetre_parametres, text = "Jetons 2", width = 100, height = 100, image = jetons_fleur_blanche, compound = "center", bd = 0, highlightthickness = 0, bg = 'red')
+bouton_jetons2.place(x = 380, y = 320)
+
+jetons_chien = Image.open("Thème chien jetons.png")
+jetons_chien = ImageTk.PhotoImage(jetons_chien)
+bouton_jetons3 = tk.Button(fenetre_parametres, text = "Jetons 3", width = 100, height = 100, image = jetons_chien, compound = "center", bd = 0, highlightthickness = 0, bg = 'red')
+bouton_jetons3.place(x=580, y=320)
+
+jetons_chat = Image.open("Thème chat jetons.png")
+jetons_chat = ImageTk.PhotoImage(jetons_chat)
+bouton_jetons4 = tk.Button(fenetre_parametres, text = "Jetons 4", width = 100, height = 100, image = jetons_chat, compound = "center", bd = 0, highlightthickness = 0, bg = 'red')
+bouton_jetons4.place(x=780, y=320)
+
+bouton_quitter = tk.Button(fenetre_parametres, text = "X", bg = "red", fg = "white", font = ("Helvetica", 10, "bold"), command = quitter)
+bouton_quitter.place(relx = 1.0, x = -3, y = 2.5, anchor = "ne")
+
+
+# On affiche la fenêtre
+fenetre_parametres.mainloop()
