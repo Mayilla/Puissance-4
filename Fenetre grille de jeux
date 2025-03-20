@@ -56,8 +56,28 @@ def tracer_grille(grille):
                 canvas.create_oval(i* taille_case + 10, (lignes -j - 1)*taille_case + taille_case + 10, (i + 1)*taille_case - 10, (lignes-j)*taille_case + taille_case - 10, fill="yellow")
 
 
-# Initialisation de la grille et dessin initial
+
+# Alors j'ai pensé un peu au placement des jetons par clic, c'est pas encore ça + faut alterner les joueurs mieux mais l'idée est là
+# doc thinker event : https://docs.python.org/3/library/tkinter.html#bindings-and-events
+
+def ajouter_jeton(grille, col, J):
+    for i in range(0, lignes):
+        if grille[i][col] == 0:
+            grille[i][col] = J
+            break
+    return grille
+
+def clic_canvas(event):
+    global grille
+    colonne_clique = event.x // taille_case #event.x = position x(horiz) clic souris donc donne coordoné x
+    if colonne_clique >= colonnes:
+        return
+    J = 1 if np.sum(grille) % 2 == 0 else 2 #selon calcul de matrice mais sinon on peut faire une fonction dédier pour plus d'efficacité/clarté, à voir
+    grille = ajouter_jeton(grille, colonne_clique, J)
+    tracer_grille(grille)
+
+canvas.bind("<Button-1>", clic_canvas) #d'après le cours pour lier au fait de cliquer
+
 tracer_grille(grille)
 
-# Démarrer la boucle principale de Tkinter
 fenetre_grillejeux.mainloop()
