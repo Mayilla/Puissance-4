@@ -15,6 +15,21 @@ bouton_jouer.grid(row = 1, column = 0)
 bouton_reglages = tk.Button(fenetre_accueil, text = "⚙️")
 bouton_reglages.grid(row = 0, column = 1)
 
-
 # On affiche la fenêtre
 fenetre_accueil.mainloop()
+
+
+
+# Création fenêtre règles
+fenetre_regles = tk.Tk()
+fenetre_regles.title("Règles")
+
+# Contenu fenêtre règles
+text_annoce_regle = tk.Label(fenetre_regles, text = "Voici les règles de notre jeu, veuillez les respecter.")
+text_annoce_regle.grid(row = 0, column = 0)
+
+text_regle = tk.Label(fenetre_regles, text = "Puissance 4 est un jeu de stratégie pour deux joueurs où l'objectif est d'aligner quatre jetons de sa couleur dans une grille verticale.\nRègles principales :\nBut du jeu : Chaque joueur doit former une ligne de 4 jetons de sa couleur. L'alignement peut être horizontal, vertical ou diagonal.\nLa grille : La grille comporte 7 colonnes et 6 rangées. Les jetons tombent dans la colonne choisie et s'empilent.\nDéroulement :\nLes joueurs jouent à tour de rôle.\nÀ chaque tour, un joueur place un jeton dans une colonne.\nVictoire : La partie se termine lorsqu’un joueur réussit à aligner 4 jetons, ou si la grille est entièrement remplie sans gagnant (match nul).\nC'est un jeu qui mélange chance et stratégie, parfait pour tester vos réflexes et vos capacités de planification.")
+text_regle.grid(row = 1, column = 0)
+
+# On affiche la fenêtre regle
+fenetre_regles.mainloop()
