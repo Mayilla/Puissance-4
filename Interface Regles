@@ -1,0 +1,63 @@
+# Code de l'interface graphique
+import tkinter as tk
+
+# Création fenêtre accueil
+fenetre_accueil = tk.Tk()
+fenetre_accueil.title("Accueil")
+
+# Contenu fenêtre accueil
+text_principal = tk.Label(fenetre_accueil, text = "Bienvenue sur notre jeu de puissance 4 !")
+text_principal.grid(row = 0, column = 0)
+
+bouton_jouer = tk.Button(fenetre_accueil, text = "Jouer")
+bouton_jouer.grid(row = 1, column = 0)
+
+bouton_reglages = tk.Button(fenetre_accueil, text = "⚙️")
+bouton_reglages.grid(row = 0, column = 1)
+
+# On affiche la fenêtre
+fenetre_accueil.mainloop()
+
+
+import tkinter as tk
+def f_fenetre_regle() :
+
+    # Création fenêtre règles
+
+    fenetre_regles = tk.Tk()
+    fenetre_regles.title("Règles")
+    fenetre_regles.geometry("1300x700")
+    fenetre_regles.state("zoomed")
+    fenetre_regles.configure(bg = 'AntiqueWhite2')
+
+
+    # Contenu fenêtre règles
+    text_annonce_regle = tk.Label(fenetre_regles, text = "Voici les règles de notre jeu, veuillez les respecter.", font = ("Copperplate", 40) , bg = 'AntiqueWhite2')
+    text_annonce_regle.place(x = 90, y = 50)
+
+    text_regle1 = tk.Label(fenetre_regles, text = "Puissance 4 est un jeu de stratégie pour deux joueurs où l'objectif est d'aligner quatre jetons de sa couleur dans une grille verticale.", bg = 'AntiqueWhite2', font = ("Copperplate", 15))
+    text_regle1.place(x = 90, y = 100)
+
+    text_regle2 = tk.Label(fenetre_regles, text = "Règles principales :", bg = 'AntiqueWhite2', font = ("Copperplate", 25))
+    text_regle2.place(x = 90, y = 120)
+
+    text_regle3 = tk.Label(fenetre_regles, text = "But du jeu : Chaque joueur doit former une ligne de 4 jetons de sa couleur. L'alignement peut être horizontal, vertical ou diagonal.", bg = 'AntiqueWhite2', font = ("Copperplate", 15))
+    text_regle3.place(x = 120, y = 160)
+
+    text_regle4 = tk.Label(fenetre_regles, text = "La grille : La grille comporte 7 colonnes et 6 rangées. Les jetons tombent dans la colonne choisie et s'empilent.", bg = 'AntiqueWhite2', font = ("Copperplate", 15))
+    text_regle4.place(x = 120, y = 180)
+
+    text_regle5 = tk.Label(fenetre_regles, text = "Déroulement :", bg = 'AntiqueWhite2', font = ("Copperplate", 25))
+    text_regle5.place(x = 90, y = 210)
+
+    text_regle6 = tk.Label(fenetre_regles, text = "Les joueurs jouent à tour de rôle, à chaque tour, un joueur place un jeton dans une colonne.\nVictoire : La partie se termine lorsqu’un joueur réussit à aligner 4 jetons, ou si la grille est entièrement remplie sans gagnant (match nul).\nC'est un jeu qui mélange chance et stratégie, parfait pour tester vos réflexes et vos capacités de planification.", bg = 'AntiqueWhite2', font = ("Copperplate", 15))
+    text_regle6.place(x = 120, y = 240)
+
+
+    Bouton_retour_menu = tk.Button(fenetre_regles, text = "Retourner au menu principale", bg = 'AntiqueWhite2')
+    Bouton_retour_menu.place(x = 20, y = 600)
+
+    # On affiche la fenêtre regle
+    fenetre_regles.mainloop()
+
+f_fenetre_regle()
