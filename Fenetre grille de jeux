@@ -55,7 +55,7 @@ def tracer_grille(grille):
             elif grille[j][i] == 2:  # pour quand alterne J2
                 canvas.create_oval(i* taille_case + 10, (lignes -j - 1)*taille_case + taille_case + 10, (i + 1)*taille_case - 10, (lignes-j)*taille_case + taille_case - 10, fill="yellow")
 
-
+#décalage pour l'instant en fonction de la taille grille mais a rendre modifiable
 
 # Alors j'ai pensé un peu au placement des jetons par clic, c'est pas encore ça + faut alterner les joueurs mieux mais l'idée est là
 # doc thinker event : https://docs.python.org/3/library/tkinter.html#bindings-and-events
@@ -81,3 +81,5 @@ canvas.bind("<Button-1>", clic_canvas) #d'après le cours pour lier au fait de c
 tracer_grille(grille)
 
 fenetre_grillejeux.mainloop()
+
+#A faire = alternance joueur / compteur clique + plusieurs taille de jeux possible
