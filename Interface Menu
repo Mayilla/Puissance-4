@@ -15,9 +15,6 @@ def f_fenetre_menu():
     fenetre.state("zoomed")
     fenetre.configure(bg='AntiqueWhite2')
 
-    # Configuration des colonnes et lignes pour le centrage
-
-
 
     # On crée un label qui sera le nom du jeu
     nom_du_jeu = tk.Label(fenetre, text = "Puissance-X", font =("Copperplate", 100), fg = "orange", bg = "AntiqueWhite2")
