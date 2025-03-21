@@ -22,11 +22,14 @@ Etapes / points importants :
 # Répartition du travail : (à voir ensemble)
 (tout le monde touche a tout, soit division en 4 partie : 2 interface et 2 algorithme/code)
 
-- chacun créer une page (1page/4)
-    - Kinga : Menu du jeux + 
-    - Lois : Page de parametres +
-    - Rehan : Règle de jeux +
-    - Maya : Grille de jeux + début jetons + dessin de jeton personalisé 
+************ QUI FAIT QUOI : (sur 4 pages) ****************************************************************************
+
+    - Kinga : Menu du jeux + fonction coup gagnant(donc si alignement)/coup perdant/match nul
+    - Lois : Page de parametres/ visuel theme + code changement taille de la grille et de son theme
+    - Rehan : Règle de jeux + fonction sauvegarder et charger une partie + afficher score
+    - Maya : Grille de jeux + début jetons + dessin de jeton personalisé + fonction alternance joueur
+
+*************************************************************************************************************************
 
 # **Pour l'interface :** 
 

@@ -83,3 +83,5 @@ tracer_grille(grille)
 fenetre_grillejeux.mainloop()
 
 #A faire = alternance joueur / compteur clique + plusieurs taille de jeux possible
+# page inscription joueur prend leur nom dans le menu ou avant ? 
+# fonction joueur gagne ou perd / match nul
