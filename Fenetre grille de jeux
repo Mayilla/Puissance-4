@@ -67,21 +67,38 @@ def ajouter_jeton(grille, col, J):
             break
     return grille
 
-def clic_canvas(event):
-    global grille
-    colonne_clique = event.x // taille_case #event.x = position x(horiz) clic souris donc donne coordoné x
-    if colonne_clique >= colonnes:
-        return
-    J = 1 if np.sum(grille) % 2 == 0 else 2 #selon calcul de matrice mais sinon on peut faire une fonction dédier pour plus d'efficacité/clarté, à voir
-    grille = ajouter_jeton(grille, colonne_clique, J)
-    tracer_grille(grille)
 
-canvas.bind("<Button-1>", clic_canvas) #d'après le cours pour lier au fait de cliquer
+def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
+    colonne_clique = event.x // taille_case  #position x de la souris donc la colonne choisie
+    if colonne_clique >= colonnes:
+        return grille, cmpt
+
+    if cmpt % 2 == 0: 
+        J = 1 #là sera rouge
+    else:  
+        J = 2 #là sera jaune 
+
+    grille = ajouter_jeton(grille, colonne_clique, J)  
+    tracer_grille(grille)  
+    cmpt += 1 
+    
+    return grille, cmpt
+
+#pour gérer le nbr de clic/alternance
+def clic_canvas(event):
+    global grille, cmpt
+    grille, cmpt = alternance_joueur(event, grille, taille_case, colonnes, cmpt)
+
+
+cmpt = 0 #début compteur
+
+canvas.bind("<Button-1>", clic_canvas)
 
 tracer_grille(grille)
 
 fenetre_grillejeux.mainloop()
 
-#A faire = alternance joueur / compteur clique + plusieurs taille de jeux possible
-# page inscription joueur prend leur nom dans le menu ou avant ? 
-# fonction joueur gagne ou perd / match nul
+
+###########################################################################################################
+
+#Entrer du nom des jours : 
