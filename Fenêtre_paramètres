@@ -32,12 +32,12 @@ def quitter():
 
 
 # Contenu fenêtre des paramètres
-text_principal = tk.Label(fenetre_parametres, text = "Paramètres", font = ("Helvetica", 22, "bold"))
+text_principal = tk.Label(fenetre_parametres, text = "Paramètres", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
 text_principal.place(relx=0.5, y=70, anchor="center")
 
     # Texte pour le choix de la grille
-text_grille = tk.Label(fenetre_parametres, text = "Thème de la grille :", font = ("Helvetica", 15, "bold"))
-text_grille.place(x = 70, y = 130)
+text_grille = tk.Label(fenetre_parametres, text = "Thème de la grille :", font=("Comic Sans MS", 15, "bold"), bg="#ffecaf", fg="#a97c11")
+text_grille.place(x = 70, y = 125)
 
         # Boutons pour le choix de la grille
 grille_bleue = Image.open("Thème bleu grille.png")
@@ -66,8 +66,8 @@ bouton_grille5 = tk.Button(fenetre_parametres, text = "", width = 110, height = 
 bouton_grille5.place(x = 980, y = 170)
 
     # Texte pour le choix des jetons
-text_jetons = tk.Label(fenetre_parametres, text = "Thème des jetons :", font = ("Helvetica", 15, "bold"))
-text_jetons.place(x = 70, y = 280)
+text_jetons = tk.Label(fenetre_parametres, text = "Thème des jetons :", font=("Comic Sans MS", 15, "bold"), bg="#ffecaf", fg="#a97c11")
+text_jetons.place(x = 70, y = 275)
 
         # Bouttons pour le choix des jetons
 jetons_r_j = Image.open("Thème rouge-jaune jetons.png")
@@ -97,8 +97,15 @@ jetons_robot = ImageTk.PhotoImage(jetons_robot)
 bouton_jetons3 = tk.Button(fenetre_parametres, text = "", width = 100, height = 100, image = jetons_robot, compound = "center", bd = 0, highlightthickness = 0, bg = '#ffd88e')
 bouton_jetons3.place(x = 990, y = 320)
 
+    # Texte pour le choix de la taille de grille
+text_taille = tk.Label(fenetre_parametres, text = "Taille du jeu :", font=("Comic Sans MS", 15, "bold"), bg="#ffecaf", fg="#a97c11")
+text_taille.place(x = 70, y = 450)
+
+        # Boutons pour le choix de la taille de grille
+...
 
 
+# Bouton permettant de quitter la fenêtre (et de revenir à la fenêtre précédente dans un futur lointain)
 bouton_quitter = tk.Button(fenetre_parametres, text = "X", bg = "red", fg = "white", font = ("Helvetica", 10, "bold"), command = quitter)
 bouton_quitter.place(relx = 1.0, x = -3, y = 2.5, anchor = "ne")
 
