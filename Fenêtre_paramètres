@@ -42,27 +42,27 @@ text_grille.place(x = 70, y = 130)
         # Boutons pour le choix de la grille
 grille_bleue = Image.open("Thème bleu grille.png")
 grille_bleue = ImageTk.PhotoImage(grille_bleue)
-bouton_grille1 = tk.Button(fenetre_parametres, text = "Grille 1", width=110, height=70, image=grille_bleue, compound="center")
+bouton_grille1 = tk.Button(fenetre_parametres, text = "", width=110, height=70, image=grille_bleue, compound="center")
 bouton_grille1.place(x = 180, y = 170)
 
 grille_bois = Image.open("Thème bois grille.png")
 grille_bois = ImageTk.PhotoImage(grille_bois)
-bouton_grille2 = tk.Button(fenetre_parametres, text = "Grille 2", width = 110, height = 70, image = grille_bois, compound = "center")
+bouton_grille2 = tk.Button(fenetre_parametres, text = "", width = 110, height = 70, image = grille_bois, compound = "center")
 bouton_grille2.place(x = 380, y = 170)
 
 grille_enfants = Image.open("Thème enfants grille.png")
 grille_enfants = ImageTk.PhotoImage(grille_enfants)
-bouton_grille3 = tk.Button(fenetre_parametres, text = "Grille 3", width = 110, height = 70, image = grille_enfants, compound = "center")
+bouton_grille3 = tk.Button(fenetre_parametres, text = "", width = 110, height = 70, image = grille_enfants, compound = "center")
 bouton_grille3.place(x = 580, y = 170)
 
 grille_nature = Image.open("Thème nature grille.png")
 grille_nature = ImageTk.PhotoImage(grille_nature)
-bouton_grille4 = tk.Button(fenetre_parametres, text = "Grille 4", width = 110, height = 70, image = grille_nature, compound = "center")
+bouton_grille4 = tk.Button(fenetre_parametres, text = "", width = 110, height = 70, image = grille_nature, compound = "center")
 bouton_grille4.place(x = 780, y = 170)
 
 grille_game = Image.open("Thème game grille.png")
 grille_game = ImageTk.PhotoImage(grille_game)
-bouton_grille5 = tk.Button(fenetre_parametres, text = "Grille 5", width = 110, height = 70, image = grille_game, compound = "center")
+bouton_grille5 = tk.Button(fenetre_parametres, text = "", width = 110, height = 70, image = grille_game, compound = "center")
 bouton_grille5.place(x = 980, y = 170)
 
     # Texte pour le choix des jetons
@@ -70,25 +70,33 @@ text_jetons = tk.Label(fenetre_parametres, text = "Thème des jetons :", font = 
 text_jetons.place(x = 70, y = 280)
 
         # Bouttons pour le choix des jetons
-jetons_fleur_rose = Image.open("Thème fleur rose jetons.png")
-jetons_fleur_rose = ImageTk.PhotoImage(jetons_fleur_rose)
-bouton_jetons1 = tk.Button(fenetre_parametres, text = "Jetons 1", width = 100, height = 100, image = jetons_fleur_rose, compound = "center", bd = 0, highlightthickness = 0, bg = 'red')
-bouton_jetons1.place(x = 180, y = 320)
+jetons_r_j = Image.open("Thème rouge-jaune jetons.png")
+jetons_r_j = ImageTk.PhotoImage(jetons_r_j)
+bouton_jetons2 = tk.Button(fenetre_parametres, text = "", width = 100, height = 100, image = jetons_r_j, compound = "center", bd = 0, highlightthickness = 0, bg = '#ffd88e')
+bouton_jetons2.place(x = 190, y = 320)
 
-jetons_fleur_blanche = Image.open("Thème fleur blanche jetons.png")
-jetons_fleur_blanche = ImageTk.PhotoImage(jetons_fleur_blanche)
-bouton_jetons2 = tk.Button(fenetre_parametres, text = "Jetons 2", width = 100, height = 100, image = jetons_fleur_blanche, compound = "center", bd = 0, highlightthickness = 0, bg = 'red')
-bouton_jetons2.place(x = 380, y = 320)
+jetons_chien_chat = Image.open("Thème chien-chat jetons.png")
+jetons_chien_chat = ImageTk.PhotoImage(jetons_chien_chat)
+bouton_jetons3 = tk.Button(fenetre_parametres, text = "", width = 100, height = 100, image = jetons_chien_chat, compound = "center", bd = 0, highlightthickness = 0, bg = '#ffd88e')
+bouton_jetons3.place(x = 390, y = 320)
 
-jetons_chien = Image.open("Thème chien jetons.png")
-jetons_chien = ImageTk.PhotoImage(jetons_chien)
-bouton_jetons3 = tk.Button(fenetre_parametres, text = "Jetons 3", width = 100, height = 100, image = jetons_chien, compound = "center", bd = 0, highlightthickness = 0, bg = 'red')
-bouton_jetons3.place(x=580, y=320)
+'''
+jetons_nous = Image.open("Thème chien-chat jetons.png")
+jetons_nous = ImageTk.PhotoImage(jetons_nous)
+bouton_jetons3 = tk.Button(fenetre_parametres, text = "", width = 100, height = 100, image = jetons_nous, compound = "center", bd = 0, highlightthickness = 0, bg = '#ffd88e')
+bouton_jetons3.place(x = 590, y = 320)
+'''
 
-jetons_chat = Image.open("Thème chat jetons.png")
-jetons_chat = ImageTk.PhotoImage(jetons_chat)
-bouton_jetons4 = tk.Button(fenetre_parametres, text = "Jetons 4", width = 100, height = 100, image = jetons_chat, compound = "center", bd = 0, highlightthickness = 0, bg = 'red')
-bouton_jetons4.place(x=780, y=320)
+jetons_fleurs = Image.open("Thème fleurs jetons.png")
+jetons_fleurs = ImageTk.PhotoImage(jetons_fleurs)
+bouton_jetons2 = tk.Button(fenetre_parametres, text = "", width = 100, height = 100, image = jetons_fleurs, compound = "center", bd = 0, highlightthickness = 0, bg = '#ffd88e')
+bouton_jetons2.place(x = 790, y = 320)
+
+jetons_robot = Image.open("Thème robot jetons.png")
+jetons_robot = ImageTk.PhotoImage(jetons_robot)
+bouton_jetons3 = tk.Button(fenetre_parametres, text = "", width = 100, height = 100, image = jetons_robot, compound = "center", bd = 0, highlightthickness = 0, bg = '#ffd88e')
+bouton_jetons3.place(x = 990, y = 320)
+
 
 
 bouton_quitter = tk.Button(fenetre_parametres, text = "X", bg = "red", fg = "white", font = ("Helvetica", 10, "bold"), command = quitter)
