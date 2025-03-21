@@ -1,0 +1,37 @@
+import tkinter as tk
+from PIL import Image, ImageTk
+import numpy as np 
+
+def boutonFourreTout() :
+    return (0)
+
+def f_fenetre_menu():
+
+    #On crée une fenêtre
+    fenetre = tk.Tk()
+    fenetre.title("Puissance-X")
+    fenetre.geometry("1300x700")
+    #fenetre.configure(bg='navy')
+    fenetre.state("zoomed")
+    fenetre.configure(bg='AntiqueWhite2')
+
+    # Configuration des colonnes et lignes pour le centrage
+
+
+
+    # On crée un label qui sera le nom du jeu
+    nom_du_jeu = tk.Label(fenetre, text = "Puissance-X", font =("Copperplate", 100), fg = "orange", bg = "AntiqueWhite2")
+    nom_du_jeu.place(x=350, y=100)
+
+    #On crée le bouton "Jouer"
+    bouton_jouer = tk.Button(fenetre, text ="Jouer", command = boutonFourreTout, bg = "AntiqueWhite2")
+    bouton_jouer.place(x=605, y=350)
+
+    #On crée le bouton "Paramètres"
+    bouton_para = tk.Button(fenetre, text ="Paramètres", command = boutonFourreTout)
+    bouton_para.place(x=590, y=500)
+
+    # On affiche la fenêtre 
+    fenetre.mainloop()
+
+f_fenetre_menu()
