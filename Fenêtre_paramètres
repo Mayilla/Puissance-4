@@ -102,7 +102,14 @@ text_taille = tk.Label(fenetre_parametres, text = "Taille du jeu :", font=("Comi
 text_taille.place(x = 70, y = 450)
 
         # Boutons pour le choix de la taille de grille
-...
+bouton_taille1 = tk.Button(fenetre_parametres, text = "Puissance 3\n6x5", font=("Comic Sans MS", 12, "bold"), bg = "#a97c11", fg = "#ffd88e", width = 9, height = 2)
+bouton_taille1.place(x = 290, y = 490)
+
+bouton_taille2 = tk.Button(fenetre_parametres, text = "Puissance 4\n7x6", font=("Comic Sans MS", 12, "bold"), bg = "#a97c11", fg = "#ffd88e", width = 9, height = 2)
+bouton_taille2.place(x = 590, y = 490)
+
+bouton_taille3 = tk.Button(fenetre_parametres, text = "Puissance 5\n8x7", font=("Comic Sans MS", 12, "bold"), bg = "#a97c11", fg = "#ffd88e", width = 9, height = 2)
+bouton_taille3.place(x = 890, y = 490)
 
 
 # Bouton permettant de quitter la fenêtre (et de revenir à la fenêtre précédente dans un futur lointain)
