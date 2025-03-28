@@ -1,4 +1,5 @@
-import tkinter as tk
+#Fenetre Menu Kinga
+    import tkinter as tk
 from PIL import Image, ImageTk
 import numpy as np 
 
@@ -10,7 +11,7 @@ def f_fenetre_menu():
     #On crée une fenêtre
     fenetre = tk.Tk()
     fenetre.title("Puissance-X")
-    fenetre.geometry("1300x700")
+    fenetre.geometry("1500x800")
     #fenetre.configure(bg='navy')
     fenetre.state("zoomed")
     fenetre.configure(bg='AntiqueWhite2')
@@ -18,15 +19,18 @@ def f_fenetre_menu():
 
     # On crée un label qui sera le nom du jeu
     nom_du_jeu = tk.Label(fenetre, text = "Puissance-X", font =("Copperplate", 100), fg = "orange", bg = "AntiqueWhite2")
-    nom_du_jeu.place(x=350, y=100)
+    nom_du_jeu.place(relx=0.5, rely=0.25, anchor="center")
 
     #On crée le bouton "Jouer"
     bouton_jouer = tk.Button(fenetre, text ="Jouer", command = boutonFourreTout, bg = "AntiqueWhite2")
-    bouton_jouer.place(x=605, y=350)
+    bouton_jouer.place(relx=0.5, rely=0.55, anchor="center")
 
     #On crée le bouton "Paramètres"
-    bouton_para = tk.Button(fenetre, text ="Paramètres", command = boutonFourreTout)
-    bouton_para.place(x=590, y=500)
+    bouton_para = tk.Button(fenetre, text ="Paramètres", command = boutonFourreTout, bg = "AntiqueWhite2")
+    bouton_para.place(relx=0.5, rely=0.65, anchor="center")
+
+    bouton_règles = tk.Button(fenetre, text ="Règles du jeu", command = f_fenetre_regle, bg = "AntiqueWhite2")
+    bouton_règles.place(relx=0.5, rely=0.75, anchor="center")
 
     # On affiche la fenêtre 
     fenetre.mainloop()
