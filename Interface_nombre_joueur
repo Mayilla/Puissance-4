@@ -1,0 +1,46 @@
+...# Code de la fenêtre des paramètres
+
+import tkinter as tk
+from PIL import Image, ImageTk
+import numpy as np
+
+
+# Création de la fenêtre
+fenetre_parametres = tk.Tk()
+fenetre_parametres.geometry("1300x700")
+fenetre_parametres.title("Nombre de joueurs")
+
+# Plein écran
+fenetre_parametres.state('zoomed')
+
+# Fond de la fenêtre
+    # Charger l'image de fond
+fond_image = Image.open("Image fond jaune.png")
+fond_photo = ImageTk.PhotoImage(fond_image)
+
+    # Créer le label pour l'image de fond
+
+label_fond = tk.Label(fenetre_parametres, image=fond_photo)
+label_fond.place(x=0, y=0, relwidth=1, relheight=1)
+
+# Fonctions de commande
+
+    # Fonction fermer la fenêtre (deviendra après un retour à la fenêtre précédente)
+def quitter():
+    fenetre_parametres.destroy()
+
+
+
+
+
+
+
+
+
+# Bouton permettant de quitter la fenêtre (et de revenir à la fenêtre précédente dans un futur lointain)
+bouton_quitter = tk.Button(fenetre_parametres, text = "⤶", bg = 'red', fg = "white", font = ("Helvetica", 10, "bold"), command = quitter)
+bouton_quitter.place(relx = 1.0, x = -3, y = 2.5, anchor = "ne")
+
+
+# On affiche la fenêtre
+fenetre_parametres.mainloop()
