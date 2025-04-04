@@ -1,4 +1,4 @@
-#Grille
+#Grille jeux + alternance jetons/joeurs Maya : 
 
 #biblio nécessaire
 import tkinter as tk
@@ -96,9 +96,26 @@ canvas.bind("<Button-1>", clic_canvas)
 
 tracer_grille(grille)
 
+#Remettre a zero la grille à chaque ouverture de la fenetre :
+
+def reset_grille():
+    global grille, cmpt
+    grille = creation_grille()  
+    cmpt = 0  #clic 0
+    tracer_grille(grille)
+
+#bouton pour renitialiser la grille en cours de jeux : 
+
+bouton_reset = tk.Button(fenetre_grillejeux, text="Reset", command=reset_grille)
+bouton_reset.pack(pady=30) #donctionement pady https://infoforall.fr/python/python-act110.html
+
 fenetre_grillejeux.mainloop()
 
 
 ###########################################################################################################
 
-#Entrer du nom des jours : 
+
+
+
+
+
