@@ -1,17 +1,23 @@
-...# Code de la fenêtre des paramètres
+# Code de la fenêtre du choix de joueurs
 
 import tkinter as tk
 from PIL import Image, ImageTk
 import numpy as np
 
+joueur_1 = 'humain'
+joueur_2 = 'humain'
+
+texte_joueur_1 = "-"
+texte_joueur_2 = "-"
+
 
 # Création de la fenêtre
-fenetre_parametres = tk.Tk()
-fenetre_parametres.geometry("1300x700")
-fenetre_parametres.title("Nombre de joueurs")
+fenetre_nom_joueur = tk.Tk()
+fenetre_nom_joueur.geometry("1300x700")
+fenetre_nom_joueur.title("Nombre de joueurs")
 
 # Plein écran
-fenetre_parametres.state('zoomed')
+fenetre_nom_joueur.state('zoomed')
 
 # Fond de la fenêtre
     # Charger l'image de fond
@@ -20,27 +26,170 @@ fond_photo = ImageTk.PhotoImage(fond_image)
 
     # Créer le label pour l'image de fond
 
-label_fond = tk.Label(fenetre_parametres, image=fond_photo)
-label_fond.place(x=0, y=0, relwidth=1, relheight=1)
+label_fond = tk.Label(fenetre_nom_joueur, image = fond_photo)
+label_fond.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
 # Fonctions de commande
 
     # Fonction fermer la fenêtre (deviendra après un retour à la fenêtre précédente)
 def quitter():
-    fenetre_parametres.destroy()
+    fenetre_nom_joueur.destroy()
+
+    # Fonction lancer la partie (relie la page de jeu)
+def lancer_partie():
+    print("Lancer la partie !")
+    fenetre_nom_joueur.destroy()
+
+
+    # Fonction affichage noms des joueurs
+def mettre_a_jour_label_noms():
+    text_nom_joueurs.config(text = f"Joueur 1 : {texte_joueur_1} \n Joueur 2 : {texte_joueur_2}")
+
+
+    # Fonction pour enregistrer le texte saisi sous le bouton 1
+def enregistrer_texte_1():
+    global texte_joueur_1
+    texte_joueur_1 = champ_texte_1.get()
+    print(f"Texte enregistré pour le bouton 1 : {texte_joueur_1}")
+    mettre_a_jour_label_noms()
+
+
+    # Fonction pour enregistrer le texte saisi sous le bouton 2
+def enregistrer_texte_2():
+    global texte_joueur_2
+    texte_joueur_2 = champ_texte_2.get()
+    print(f"Texte enregistré pour le bouton 2 : {texte_joueur_2}")
+    mettre_a_jour_label_noms()
+
+
+    # Fonction pour changer l'image du bouton joueur 1
+def changer_image():
+    global joueur_1, joueur_2, texte_joueur_1
+    if joueur_2 == 'robot':
+        return
+    if bouton_1["image"] == str(image1):
+        bouton_1.config(image=image3)
+        joueur_1 = 'robot'
+        texte_joueur_1 = "Robot"
+        champ_texte_1.delete(0, "end")
+        champ_texte_1.insert(0, "Robot")
+        champ_texte_1.config(state="disabled")
+        print(f"Type de joueur 1 : {joueur_1}")
+    else:
+        bouton_1.config(image=image1)
+        joueur_1 = 'humain'
+        texte_joueur_1 = "-"
+        champ_texte_1.config(state="normal")
+        champ_texte_1.delete(0, "end")
+        champ_texte_1.insert(0, "Nom joueur 1")
+        print(f"Type de joueur 1 : {joueur_1}")
+    mettre_a_jour_label_noms()
+
+
+    # Fonction pour changer l'image du bouton joueur 2
+def changer_image_2():
+    global joueur_1, joueur_2, texte_joueur_2
+    if joueur_1 == 'robot':
+        return
+    if bouton_2["image"] == str(image2):
+        bouton_2.config(image=image3)
+        joueur_2 = 'robot'
+        texte_joueur_2 = "Robot"
+        champ_texte_2.delete(0, "end")
+        champ_texte_2.insert(0, "Robot")
+        champ_texte_2.config(state="disabled")
+        print(f"Type de joueur 2 : {joueur_2}")
+    else:
+        bouton_2.config(image=image2)
+        joueur_2 = 'humain'
+        texte_joueur_2 = "-"
+        champ_texte_2.config(state="normal")
+        champ_texte_2.delete(0, "end")
+        champ_texte_2.insert(0, "Nom joueur 2")
+        print(f"Type de joueur 2 : {joueur_2}")
+    mettre_a_jour_label_noms()
+
+
+        # Fonction pour ajouter une indication dans un champ de saisie
+def ajouter_indication(champ, texte):
+    champ.insert(0, texte)
+    champ.bind("<FocusIn>", lambda event: supprimer_indication(champ, texte))
+    champ.bind("<FocusOut>", lambda event: restaurer_indication(champ, texte))
+
+
+    # Fonction pour supprimer l'indication lorsque l'utilisateur clique dans le champ
+def supprimer_indication(champ, texte):
+    if champ.get() == texte:
+        champ.delete(0, "end")
+
+
+    # Fonction pour restaurer le indication si le champ est vide
+def restaurer_indication(champ, texte):
+    if champ.get() == "":
+        champ.insert(0, texte)
 
 
 
+# Contenu fenêtre des paramètres
+text_principal = tk.Label(fenetre_nom_joueur, text = "Nombre de joueurs", font = ("Comic Sans MS", 23, "bold"), bg = "#ffecaf", fg = "#a97c11")
+text_principal.place(relx=0.5, y=80, anchor = "center")
+
+text_consignes = tk.Label(fenetre_nom_joueur, text = "Vous pouvez choisir vos noms de joueurs ainsi que le mode de jeu : 2 joueurs ou contre l'IA. \n Pour cela, cliquez sur les images.", font = ("Comic Sans MS", 18), bg = "#ffd88e", fg = "#a97c11")
+text_consignes.place(relx=0.5, y=151, anchor = "center")
+
+text_nom_joueurs = tk.Label(fenetre_nom_joueur, text = f"Joueur 1 : {texte_joueur_1} \n Joueur 2 : {texte_joueur_2}", font = ("Comic Sans MS", 18), bg = "#ffd88e", fg = "#a97c11")
+text_nom_joueurs.place(relx=0.5, y=455, anchor = "center")
 
 
+# Charger les images
+image1 = ImageTk.PhotoImage(Image.open("Image joueur humain.png"))
+image2 = ImageTk.PhotoImage(Image.open("Image joueur 2 humain.png"))
+image3 = ImageTk.PhotoImage(Image.open("Image joueur robot.png"))
 
 
+    # Boutons pour choisir le type de joueur
+bouton_1 = tk.Button(fenetre_nom_joueur, text = "", width = 100, height = 100, image=image1, bd = 0, highlightthickness = 0, bg = '#ffd88e', compound = "center", command = changer_image)
+bouton_1.place(relx=0.4, rely=0.4, anchor = "center")
+
+bouton_2 = tk.Button(fenetre_nom_joueur, text = "", width = 100, height = 100, image=image2, bd = 0, highlightthickness = 0, bg = '#ffd88e', compound = "center", command = changer_image_2)
+bouton_2.place(relx=0.6, rely=0.4, anchor = "center")
 
 
-# Bouton permettant de quitter la fenêtre (et de revenir à la fenêtre précédente dans un futur lointain)
-bouton_quitter = tk.Button(fenetre_parametres, text = "⤶", bg = 'red', fg = "white", font = ("Helvetica", 10, "bold"), command = quitter)
-bouton_quitter.place(relx = 1.0, x = -3, y = 2.5, anchor = "ne")
+    # Champs de saisie pour entrer du texte
+champ_texte_1 = tk.Entry(fenetre_nom_joueur, width = 20, font = ("Helvetica", 12))
+champ_texte_1.place(relx=0.4, rely=0.53, anchor = "center") 
+
+champ_texte_2 = tk.Entry(fenetre_nom_joueur, width = 20, font = ("Helvetica", 12))
+champ_texte_2.place(relx=0.6, rely=0.53, anchor = "center") 
+
+
+    # Boutons pour enregistrer le texte
+bouton_enregistrer_1 = tk.Button(fenetre_nom_joueur, text = "Enregistrer", font =("Helvetica", 10), bg = "#a97c11", fg = "#ffecaf", command = enregistrer_texte_1)
+bouton_enregistrer_1.place(relx=0.4, rely=0.59, anchor = "center")
+
+bouton_enregistrer_2 = tk.Button(fenetre_nom_joueur, text = "Enregistrer", font = ("Helvetica", 10), bg = "#a97c11", fg = "#ffecaf", command = enregistrer_texte_2)
+bouton_enregistrer_2.place(relx=0.6, rely=0.59, anchor = "center")
+
+
+    # Champs de saisie pour entrer du texte avec placeholders
+champ_texte_1 = tk.Entry(fenetre_nom_joueur, width = 20, font = ("Helvetica", 12), fg = "grey", bg = "#ffecaf")
+champ_texte_1.place(relx=0.4, rely=0.53, anchor = "center")
+ajouter_indication(champ_texte_1, "Nom joueur 1")
+
+champ_texte_2 = tk.Entry(fenetre_nom_joueur, width = 20, font = ("Helvetica", 12), fg = "grey", bg = "#ffecaf")
+champ_texte_2.place(relx=0.6, rely=0.53, anchor = "center")
+ajouter_indication(champ_texte_2, "Nom joueur 2")
+
+
+    # Bouton permettant de quitter la fenêtre (et de revenir à la fenêtre précédente dans un futur lointain)
+bouton_quitter = tk.Button(fenetre_nom_joueur, text = "⤶", bg = 'red', fg = "white", font = ("Comic Sans MS", 10, "bold"), command = quitter)
+bouton_quitter.place(relx = 1.0, x=-3, y=2.5, anchor = "ne")
+
+
+    # Bouton pour lancer la partie
+bouton_lancer_partie = tk.Button(fenetre_nom_joueur, text = "Lancer la partie", font = ("Comic Sans MS", 18, "bold"), bg = "#ffecaf", fg = "#a97c11", command = lancer_partie)
+bouton_lancer_partie.place(relx=0.5, y=545, anchor = "center")
 
 
 # On affiche la fenêtre
-fenetre_parametres.mainloop()
+fenetre_nom_joueur.mainloop()
