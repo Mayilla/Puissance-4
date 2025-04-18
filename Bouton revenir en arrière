@@ -1,0 +1,17 @@
+#Annuler un coup boutton (Maya) : 
+
+#biblio nécessaire
+import tkinter as tk
+import numpy as np
+from PIL import Image, ImageTk
+
+#https://docs.python.org/3/library/tkinter.html
+
+#Bouton pour revenir en arrière
+def annuler_action():
+    global grille, J, historique_jeux, , jeton_rouge, jeton_jaune, case_vide
+    if historique_jeux:
+        dernier_coup = historique.pop() #derniere action par J + remet bonne grille avant
+        grille[dernier_coup[0]][dernier_coup[1]] = 0 
+
+       ## (a voir)

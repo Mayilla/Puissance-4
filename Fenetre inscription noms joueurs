@@ -1,0 +1,77 @@
+### Interface nom joeurs Maya : 
+
+#biblio nécessaire
+import tkinter as tk
+import numpy as np
+from PIL import Image, ImageTk
+
+#fenêtre saisie
+fenetre_inscription = tk.Tk()
+fenetre_inscription.geometry("1300x700")
+fenetre_inscription.title("Quels sont les joueurs ?")
+fenetre_inscription.state('zoomed')
+
+# Fond de la fenêtre/image
+
+fond_image = Image.open("Image fond jaune.png")
+fond_photo = ImageTk.PhotoImage(fond_image)
+
+label_fond = tk.Label(fenetre_inscription, image=fond_photo)
+label_fond.place(x=0, y=0, relwidth=1, relheight=1)
+
+
+#enregistrer nom des joeurs = joueur écrit son nom puis valide pour l'afficher et commencer la partie
+
+def nom_joueurs():
+    nom_J1 = entry_J1.get()
+    nom_J2 = entry_J2.get()
+
+    print(f"Joueur 1: {nom_J1}")
+    print(f"Joueur 2: {nom_J2}")
+
+    label_joueurs.config(text=f"Joueur 1: {nom_J1}\nJoueur 2: {nom_J2}")
+
+#nessage de la page (à voir)
+titre_label = tk.Label(fenetre_inscription, text="Bienvenue ! Pour bien commencer la partie, veuillez entrer les noms des joueurs.", font= ("Copperplate", 25), fg = "orange", bg = "AntiqueWhite2")
+titre_label.pack(pady=50)
+
+
+###J1
+label_J1 = tk.Label(fenetre_inscription, text="Joueur 1:", font=("Copperplate", 18))
+label_J1.pack(pady=10)
+
+entry_J1 = tk.Entry(fenetre_inscription, font=("Copperplate", 18)) #boite entrée texte J1
+entry_J1.pack(pady=10)
+
+###J2
+label_J2 = tk.Label(fenetre_inscription, text="Joueur 2:", font=("Copperplate", 18))
+label_J2.pack(pady=10)
+
+entry_J2 = tk.Entry(fenetre_inscription, font=("Copperplate", 18)) #boite entrée texte J2
+entry_J2.pack(pady=10)
+
+#buttons valider des noms
+bouton_valider = tk.Button(fenetre_inscription, text="Valider", font=("Copperplate", 16), command=nom_joueurs) #enregistre noms
+bouton_valider.pack(pady=20)
+
+label_joueurs = tk.Label(fenetre_inscription, text="Joueur 1: -\nJoueur 2: -", font=("Copperplate", 18)) #affiche nom
+label_joueurs.pack(pady=20)
+
+#bouton lancer la partie donc quitter la page d'enregistrement
+def lancer_partie():
+    print("Lancer la partie !")
+    fenetre_inscription.destroy()  #Fermer la fenêtre
+
+bouton_lancer_partie = tk.Button(fenetre_inscription, text="Lancer la partie", font=("Copperplate", 16), command=lancer_partie) #lance la partie
+bouton_lancer_partie.pack(pady=20)
+
+#fonction pour recommencer si erreur de frappe ou changement des noms/re-saisie
+def recommencer():
+    entry_J1.delete(0, tk.END)
+    entry_J2.delete(0, tk.END)
+    label_joueurs.config(text="Joueur 1, vous êtes :-\nJoueur 2, vous êtes : -")
+    
+bouton_recommencer = tk.Button(fenetre_inscription, text="Recommencer", font=("Copperplate", 16), command=recommencer)
+bouton_recommencer.pack(pady=20)
+
+fenetre_inscription.mainloop()
