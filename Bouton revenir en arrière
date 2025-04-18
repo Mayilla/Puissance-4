@@ -11,7 +11,7 @@ from PIL import Image, ImageTk
 def annuler_action():
     global grille, J, historique_jeux, , jeton_rouge, jeton_jaune, case_vide
     if historique_jeux:
-        dernier_coup = historique.pop() #derniere action par J + remet bonne grille avant
+        dernier_coup = historique_jeux.pop() #derniere action par J + remet bonne grille avant
         grille[dernier_coup[0]][dernier_coup[1]] = 0 
 
        ## (a voir)
