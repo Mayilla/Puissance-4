@@ -14,4 +14,4 @@ def annuler_action():
         dernier_coup = historique_jeux.pop() #derniere action par J + remet bonne grille avant
         grille[dernier_coup[0]][dernier_coup[1]] = 0 
 
-       ## (a voir)
+       ## (a voir/ mdodif en fonction code Kinga)
