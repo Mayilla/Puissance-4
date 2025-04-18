@@ -10,26 +10,26 @@ Etapes / points importants :
 
     - Mode à 2 joueur 
     - Sauvegarde et chargement d’une partie en cours 
-    - Bouton revenir en arrière/ annule coup
+    - Bouton revenir en arrière/ annule coup ***
     - Joueur qui débute la partie = choisi au hasard mais alterner joueur qui commence a chaque fois les joueurs posent 
         un jeton dans la grille qui tombe jusqu'à toucher le fond ou un autre jeton 1er avec 4 jetons en diagonale, 
         verticalement ou horizontalement alignés gagne la manche // Match nul si grille pleine mais pas d'alignement
-    - Faire des parties/sets a “n” manche = gagnant après un certain nombre de manche
+    - Faire des parties/sets a “n” manche = gagnant après un certain nombre de  ***
     - Interface graphique / Menu 
     - Possibilité de changer les paramètres de la grille / nombre de jetons à aligner pour gagner 
-    - (Réfléchir à AI / robot contre qui se battre)
+    - (Réfléchir à AI / robot contre qui se battre) ***
 
 # Répartition du travail : (à voir ensemble)
 (tout le monde touche a tout, soit division en 4 partie : 2 interface et 2 algorithme/code)
 
-************ QUI FAIT QUOI : (pour les 4 pages) ****************************************************************************
+************ QUI FAIT QUOI : (pour les 4 pages) ***************************************************************************************
 
     - Kinga : Menu du jeux + fonction coup gagnant(donc si alignement)/coup perdant/match nul +
     - Lois : Page de parametres/ visuel theme + code changement taille de la grille et de son theme +
     - Rehan : Règles de jeux + fonction sauvegarder et charger une partie + afficher/enregistrer score +
-    - Maya : Grille de jeux + ajout jetons + (dessin pair jeton personalisé) + bouton renitialiser grille + fonction alternance jeux avec 2 joueurs + entrer noms joueurs
+    - Maya : Grille de jeux + ajout jetons + (dessin pair jeton personalisé) + bouton renitialiser grille + fonction alternance jeux avec 2 joueurs + entrer/ inscription noms joueurs
 
-*************************************************************************************************************************
+**************************************************************************************************************************************
 
 # **Pour l'interface :** 
 
