@@ -1,0 +1,174 @@
+#Grille jeux + alternance jetons/joeurs Maya : 
+
+#biblio nécessaire
+import tkinter as tk
+import numpy as np
+from PIL import Image, ImageTk
+from tkinter import messagebox
+
+
+#https://docs.python.org/3/library/tkinter.html
+
+# Taille de la grille de jeux
+lignes = 6
+colonnes = 7
+taille_case = 100
+rayon = int(taille_case /2-5)
+
+# Couleurs utilisées : 
+#Alors pour l'instant j'ai juste mis les couleur du jeux de base, a voir par la suite si on modifie
+
+bleu = (0, 0, 255)  
+rouge = (255, 0, 0)  
+jaune = (255, 255, 0)
+noir = (0,0,0)
+
+
+# Création fenêtre
+fenetre_grillejeux = tk.Tk()
+fenetre_grillejeux.geometry("1300x700")
+fenetre_grillejeux.title("Grille de jeux")
+fenetre_grillejeux.state('zoomed')
+
+# Label message gagnant
+label_resultat = tk.Label(fenetre_grillejeux, text="", font=("Copperplate", 80))  # Augmenter la taille de la police
+label_resultat.place(relx=0.5, rely=0.7, anchor="center")
+
+
+# Création du canvas
+canvas = tk.Canvas(fenetre_grillejeux, width=colonnes * taille_case, height=(lignes + 1) * taille_case)
+canvas.pack()
+
+# Création grille de base donc vide
+def creation_grille():
+    grille = np.zeros((lignes, colonnes))  #soit matrice 6x7
+    return grille
+
+grille = creation_grille() 
+
+# Fonction pour tracer grille et emplacements jetons
+def tracer_grille(grille):
+    canvas.delete("all") 
+    # Base de la grille
+    for i in range(colonnes):
+        for j in range(lignes):
+            canvas.create_rectangle(i*taille_case, j*taille_case + taille_case, (i + 1)*taille_case, (j + 1)*taille_case + taille_case, fill="blue", outline="black")
+            canvas.create_oval(i*taille_case + 10, j*taille_case + taille_case + 10, (i + 1)*taille_case - 10, (j + 1)*taille_case + taille_case - 10, fill="black")
+    # Places jetons
+    for i in range(colonnes):
+        for j in range(lignes):
+            if grille[j][i] == 1:  # pour quand alterne J1
+                canvas.create_oval(i*taille_case + 10, (lignes -j - 1)*taille_case + taille_case + 10, (i + 1)*taille_case - 10, (lignes -j)*taille_case + taille_case - 10, fill="red")
+            elif grille[j][i] == 2:  # pour quand alterne J2
+                canvas.create_oval(i* taille_case + 10, (lignes -j - 1)*taille_case + taille_case + 10, (i + 1)*taille_case - 10, (lignes-j)*taille_case + taille_case - 10, fill="yellow")
+
+#décalage pour l'instant en fonction de la taille grille mais a rendre modifiable
+
+# Alors j'ai pensé un peu au placement des jetons par clic, c'est pas encore ça + faut alterner les joueurs mieux mais l'idée est là
+# doc thinker event : https://docs.python.org/3/library/tkinter.html#bindings-and-events
+
+def ajouter_jeton(grille, col, J):
+    for i in range(0, lignes):
+        if grille[i][col] == 0:
+            grille[i][col] = J
+            break
+    return grille
+
+
+def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
+    colonne_clique = event.x // taille_case  #position x de la souris donc la colonne choisie
+    if colonne_clique >= colonnes:
+        return grille, cmpt
+
+    if cmpt % 2 == 0: 
+        J = 1 #là sera rouge
+    else:  
+        J = 2 #là sera jaune 
+
+    grille = ajouter_jeton(grille, colonne_clique, J)  
+    tracer_grille(grille)  
+    cmpt += 1 
+    
+    return grille, cmpt
+
+#pour gérer le nbr de clic/alternance
+def clic_canvas(event):
+    global grille, cmpt
+
+        # On joue le coup
+    grille, cmpt = alternance_joueur(event, grille, taille_case, colonnes, cmpt)
+
+        # Puis on vérifie s'il y a un gagnant
+    gagnant = check_gagnant(grille)
+    if gagnant != 0:
+        couleur = "Rouge" if gagnant == 1 else "Jaune"
+        label_resultat.config(text=f"{couleur} a gagné ! 🎉")
+        if couleur == "Rouge" :
+            label_resultat.config(fg = "red")
+        elif couleur == "Jaune" :
+            label_resultat.config(fg = "#FFD700")
+        canvas.unbind("<Button-1>")         # désactive les clics
+
+    # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
+    elif np.all(grille != 0):
+        label_resultat.config(text="Match nul ! 😅", fg = "black")
+        canvas.unbind("<Button-1>")  # Désactive les clics
+
+
+cmpt = 0 #début compteur
+
+canvas.bind("<Button-1>", clic_canvas)
+
+tracer_grille(grille)
+
+#Remettre a zero la grille à chaque ouverture de la fenetre :
+
+def reset_grille():
+    global grille, cmpt
+    grille = creation_grille()  
+    cmpt = 0  #clic 0
+    tracer_grille(grille)
+    canvas.bind("<Button-1>", clic_canvas)      # On réactive les clics
+    label_resultat.config(text="")              # Efface le message de victoire
+
+#bouton pour renitialiser la grille en cours de jeux : 
+
+bouton_reset = tk.Button(fenetre_grillejeux, text="Reset", command=reset_grille)
+bouton_reset.pack(pady=30) #donctionement pady https://infoforall.fr/python/python-act110.html
+
+fenetre_grillejeux.mainloop()
+
+
+###########################################################################################################
+
+
+# Fonctions coups gagnant/perdant/match nul
+
+
+
+def check_gagnant(grille):
+    lignes, colonnes = grille.shape
+
+    for ligne in range(lignes):
+        for col in range(colonnes):
+            joueur = grille[ligne][col]
+            if joueur == 0:
+                continue
+
+            # Horizontal
+            if col + 3 < colonnes and all(grille[ligne][col + i] == joueur for i in range(4)):
+                return joueur
+
+            # Vertical
+            if ligne + 3 < lignes and all(grille[ligne + i][col] == joueur for i in range(4)):
+                return joueur
+
+            # Diagonale descendante
+            if ligne + 3 < lignes and col + 3 < colonnes and all(grille[ligne + i][col + i] == joueur for i in range(4)):
+                return joueur
+
+            # Diagonale montante
+            if ligne - 3 >= 0 and col + 3 < colonnes and all(grille[ligne - i][col + i] == joueur for i in range(4)):
+                return joueur
+
+    return 0  # pas de gagnant
