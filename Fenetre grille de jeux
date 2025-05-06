@@ -1,9 +1,13 @@
-#Grille jeux + alternance jetons/joeurs Maya : 
+#Grille jeux + alternance jetons/joueurs + sauvegarde/charger partie Maya : 
 
 #biblio nécessaire
 import tkinter as tk
 import numpy as np
 from PIL import Image, ImageTk
+from tkinter import filedialog
+import json
+
+historique_coups = []
 
 #https://docs.python.org/3/library/tkinter.html
 
@@ -28,8 +32,16 @@ fenetre_grillejeux.geometry("1300x700")
 fenetre_grillejeux.title("Grille de jeux")
 fenetre_grillejeux.state('zoomed')
 
-# Création du canvas
-canvas = tk.Canvas(fenetre_grillejeux, width=colonnes * taille_case, height=(lignes + 1) * taille_case)
+
+#frames pour séparer canvas et boutons normalement aide si boutons apparaissent pas sur votre écran (normalement)
+frame_canvas = tk.Frame(fenetre_grillejeux)
+frame_canvas.pack()
+
+frame_boutons = tk.Frame(fenetre_grillejeux)
+frame_boutons.pack(pady=10)
+
+#Canvas simple
+canvas = tk.Canvas(frame_canvas, width=colonnes * taille_case, height=(lignes + 1) * taille_case)
 canvas.pack()
 
 # Création grille de base donc vide
@@ -38,6 +50,14 @@ def creation_grille():
     return grille
 
 grille = creation_grille() 
+
+
+
+#Afficher messages quand réalise action boutons (à voir et rendre plus propre)
+message_label = tk.Label(fenetre_grillejeux, text="", font=("Arial", 14), fg="green")
+message_label.pack(pady=10)
+
+
 
 # Fonction pour tracer grille et emplacements jetons
 def tracer_grille(grille):
@@ -81,7 +101,8 @@ def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
     grille = ajouter_jeton(grille, colonne_clique, J)  
     tracer_grille(grille)  
     cmpt += 1 
-    
+    historique_coups.append(colonne_clique) 
+
     return grille, cmpt
 
 #pour gérer le nbr de clic/alternance
@@ -99,23 +120,65 @@ tracer_grille(grille)
 #Remettre a zero la grille à chaque ouverture de la fenetre :
 
 def reset_grille():
-    global grille, cmpt
+    global grille, cmpt, historique_coups
     grille = creation_grille()  
-    cmpt = 0  #clic 0
+    cmpt = 0  # clic 0
+    historique_coups.clear()  #pour éviter historique garde ancien coups
     tracer_grille(grille)
+    message_label.config(text="Grille bien réinitialisée", fg="orange")
+    fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
+
 
 #bouton pour renitialiser la grille en cours de jeux : 
 
 bouton_reset = tk.Button(fenetre_grillejeux, text="Reset", command=reset_grille)
-bouton_reset.pack(pady=30) #donctionement pady https://infoforall.fr/python/python-act110.html
+bouton_reset.pack(pady=30) #fonctionement pady https://infoforall.fr/python/python-act110.html
+
+#fonction sauvegarder/charger pour l'instant
+
+def sauvegarder_partie():
+    nom_fichier = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("Fichier JSON", "*.json")]) #comme ça on écrit ce qu'on veut comme nom
+    if not nom_fichier:
+        return
+    donnees = {
+        "grille": grille.tolist(),
+        "tour": cmpt,
+        "historique": historique_coups
+    }
+    with open(nom_fichier, "w") as fichier:
+        json.dump(donnees, fichier)
+    message_label.config(text=f"Partie sauvegardée sous {nom_fichier}", fg="green")
+    fenetre_grillejeux.after(3000, lambda: message_label.config(text=""))
+
+
+def charger_partie():
+    global grille, cmpt, historique_coups
+    nom_fichier = filedialog.askopenfilename(defaultextension=".json", filetypes=[("Fichier JSON", "*.json")])
+    if not nom_fichier:
+        return
+    with open(nom_fichier, "r") as fichier:
+        donnees = json.load(fichier)
+    grille = np.array(donnees["grille"])
+    cmpt = donnees["tour"]
+    historique_coups = donnees["historique"]
+    tracer_grille(grille)
+    message_label.config(text=f"Partie chargée à partir de {nom_fichier}", fg="blue")
+    fenetre_grillejeux.after(3000, lambda: message_label.config(text=""))
+
+
+#Tous les bontons a afficher : 
+bouton_reset = tk.Button(frame_boutons, text="Reset", command=reset_grille)
+bouton_reset.pack(side=tk.LEFT, padx=10)
+
+bouton_sauvegarder = tk.Button(frame_boutons, text="Sauvegarder", command=sauvegarder_partie)
+bouton_sauvegarder.pack(side=tk.LEFT, padx=10)
+
+bouton_charger = tk.Button(frame_boutons, text="Charger", command=charger_partie)
+bouton_charger.pack(side=tk.LEFT, padx=10)
+
 
 fenetre_grillejeux.mainloop()
 
 
 ###########################################################################################################
-
-
-
-
-
 
