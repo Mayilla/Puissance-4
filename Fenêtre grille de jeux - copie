@@ -1,0 +1,234 @@
+#Grille jeux + alternance jetons/joueurs + sauvegarde/charger partie Maya : 
+
+#biblio nécessaire
+import tkinter as tk
+import numpy as np
+from PIL import Image, ImageTk
+from tkinter import filedialog
+import json
+
+
+historique_coups = []
+
+#https://docs.python.org/3/library/tkinter.html
+
+# Taille de la grille de jeux
+lignes = 6
+colonnes = 7
+taille_case = 70
+rayon = int(taille_case /2-5)
+
+
+# Couleurs utilisées : 
+#Alors pour l'instant j'ai juste mis les couleur du jeux de base, a voir par la suite si on modifie
+
+bleu = (0, 0, 255)  
+rouge = (255, 0, 0)  
+jaune = (255, 255, 0)
+noir = (0,0,0)
+
+
+# Création fenêtre
+fenetre_grillejeux = tk.Tk()
+fenetre_grillejeux.geometry("800x500")
+fenetre_grillejeux.title("Grille de jeux")
+fenetre_grillejeux.state('zoomed')
+# Fond de la fenêtre
+    # Charger l'image de fond
+fond_image = Image.open("Image fond jaune.png")
+fond_photo = ImageTk.PhotoImage(fond_image)
+
+    # Créer le label pour l'image de fond
+
+label_fond = tk.Label(fenetre_grillejeux, image=fond_photo)
+label_fond.place(x=0, y=0, relwidth=1, relheight=1)
+
+
+# Choix du thème des jetons ==> à relier avec fenetre paramètres
+jeton_joueur_1 = Image.open("Thème chat jetons.png").resize((taille_case - 20, taille_case - 20))
+jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
+jeton_joueur_2 = Image.open("Thème chien jetons.png").resize((taille_case - 20, taille_case - 20))
+jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
+
+
+#frames pour séparer canvas et boutons normalement aide si boutons apparaissent pas sur votre écran (normalement)
+frame_canvas = tk.Frame(fenetre_grillejeux)
+frame_canvas.pack()
+
+frame_boutons = tk.Frame(fenetre_grillejeux)
+frame_boutons.pack(pady=10)
+
+#Canvas simple
+canvas = tk.Canvas(frame_canvas, width=colonnes * taille_case, height=(lignes + 1) * taille_case)
+canvas.pack()
+
+# Création grille de base donc vide
+def creation_grille():
+    grille = np.zeros((lignes, colonnes))  #soit matrice 6x7
+    return grille
+
+grille = creation_grille() 
+
+
+
+#Afficher messages quand réalise action boutons (à voir et rendre plus propre)
+message_label = tk.Label(fenetre_grillejeux, text="", font=("Arial", 14), fg="green")
+message_label.pack(pady=10)
+
+
+def tracer_grille(grille):
+    canvas.delete("all") 
+    # Base de la grille
+    for i in range(colonnes):
+        for j in range(lignes):
+            # Dessiner les rectangles de la grille
+            canvas.create_rectangle(
+                i * taille_case, j * taille_case + taille_case,
+                (i + 1) * taille_case, (j + 1) * taille_case + taille_case,
+                fill="blue", outline="black"
+            )
+            # Dessiner les emplacements vides (ovales noirs)
+            canvas.create_oval(
+                i * taille_case + 10, j * taille_case + taille_case + 10,
+                (i + 1) * taille_case - 10, (j + 1) * taille_case + taille_case - 10,
+                fill="black"
+            )
+    # Dessiner les jetons
+    for i in range(colonnes):
+        for j in range(lignes):
+            if grille[j][i] == 1:  # Joueur 1 (rouge)
+                canvas.create_image(
+                    i * taille_case + taille_case // 2,
+                    (lignes - j - 1) * taille_case + taille_case + taille_case // 2,
+                    image=jeton_joueur_1
+                )
+            elif grille[j][i] == 2:  # Joueur 2 (image)
+                canvas.create_image(
+                    i * taille_case + taille_case // 2,
+                    (lignes - j - 1) * taille_case + taille_case + taille_case // 2,
+                    image=jeton_joueur_2
+                )
+
+
+
+
+
+
+#décalage pour l'instant en fonction de la taille grille mais a rendre modifiable
+
+# Alors j'ai pensé un peu au placement des jetons par clic, c'est pas encore ça + faut alterner les joueurs mieux mais l'idée est là
+# doc thinker event : https://docs.python.org/3/library/tkinter.html#bindings-and-events
+
+def ajouter_jeton(grille, col, J):
+    for i in range(0, lignes):
+        if grille[i][col] == 0:
+            grille[i][col] = J
+            break
+    return grille
+
+
+def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
+    colonne_clique = event.x // taille_case  #position x de la souris donc la colonne choisie
+    if colonne_clique >= colonnes:
+        return grille, cmpt
+
+    if cmpt % 2 == 0: 
+        J = 1 #là sera rouge
+    else:  
+        J = 2 #là sera jaune 
+
+    grille = ajouter_jeton(grille, colonne_clique, J)  
+    tracer_grille(grille)  
+    cmpt += 1 
+    historique_coups.append(colonne_clique) 
+
+    return grille, cmpt
+
+#pour gérer le nbr de clic/alternance
+def clic_canvas(event):
+    global grille, cmpt
+    colonne_clique = event.x // taille_case  # Déterminer la colonne cliquée
+    if colonne_clique >= colonnes:
+        return  # Si la colonne est invalide, ne rien faire
+
+    # Déterminer le joueur actuel
+    joueur = 1 if cmpt % 2 == 0 else 2
+
+    # Ajouter le jeton dans la grille
+    grille = ajouter_jeton(grille, colonne_clique, joueur)
+
+    # Redessiner la grille
+    tracer_grille(grille)
+
+    # Incrémenter le compteur de tours
+    cmpt += 1
+
+
+
+
+
+cmpt = 0 #début compteur
+
+canvas.bind("<Button-1>", clic_canvas)
+
+tracer_grille(grille)
+
+#Remettre a zero la grille à chaque ouverture de la fenetre :
+
+def reset_grille():
+    global grille, cmpt, historique_coups
+    grille = creation_grille()  
+    cmpt = 0  # clic 0
+    historique_coups.clear()  #pour éviter historique garde ancien coups
+    tracer_grille(grille)
+    message_label.config(text="Grille bien réinitialisée", fg="orange")
+    fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
+
+
+#fonction sauvegarder/charger pour l'instant
+
+def sauvegarder_partie():
+    nom_fichier = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("Fichier JSON", "*.json")]) #comme ça on écrit ce qu'on veut comme nom
+    if not nom_fichier:
+        return
+    donnees = {
+        "grille": grille.tolist(),
+        "tour": cmpt,
+        "historique": historique_coups
+    }
+    with open(nom_fichier, "w") as fichier:
+        json.dump(donnees, fichier)
+    message_label.config(text=f"Partie sauvegardée sous {nom_fichier}", fg="green")
+    fenetre_grillejeux.after(3000, lambda: message_label.config(text=""))
+
+
+def charger_partie():
+    global grille, cmpt, historique_coups
+    nom_fichier = filedialog.askopenfilename(defaultextension=".json", filetypes=[("Fichier JSON", "*.json")])
+    if not nom_fichier:
+        return
+    with open(nom_fichier, "r") as fichier:
+        donnees = json.load(fichier)
+    grille = np.array(donnees["grille"])
+    cmpt = donnees["tour"]
+    historique_coups = donnees["historique"]
+    tracer_grille(grille)
+    message_label.config(text=f"Partie chargée à partir de {nom_fichier}", fg="blue")
+    fenetre_grillejeux.after(3000, lambda: message_label.config(text=""))
+
+
+#Tous les bontons a afficher : 
+bouton_reset = tk.Button(frame_boutons, text="Reset", command=reset_grille)
+bouton_reset.pack(side=tk.LEFT, padx=10)
+
+bouton_sauvegarder = tk.Button(frame_boutons, text="Sauvegarder", command=sauvegarder_partie)
+bouton_sauvegarder.pack(side=tk.LEFT, padx=10)
+
+bouton_charger = tk.Button(frame_boutons, text="Charger", command=charger_partie)
+bouton_charger.pack(side=tk.LEFT, padx=10)
+
+
+fenetre_grillejeux.mainloop()
+
+
+###########################################################################################################
