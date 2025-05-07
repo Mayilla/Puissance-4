@@ -160,7 +160,7 @@ def clic_canvas(event):
 
 
     if gagnant == 0 and not np.all(grille != 0):
-        prochain_joueur = "Rouge" if cmpt % 2 == 0 else "Jaune"
+        prochain_joueur = "Rouge" if cmpt % 2 == 0 else "Jaune"                     # Modifier avec le nom des joueurs
         couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
         label_resultat.config(text=f"À {prochain_joueur} de jouer !", fg=couleur_texte)
 
@@ -186,11 +186,6 @@ def reset_grille():
     text=f"Rouge - {victoires_joueur1}  ||  Jaune - {victoires_joueur2}",
         fg="black"
     )
-
-#bouton pour renitialiser la grille en cours de jeux : 
-
-bouton_reset = tk.Button(fenetre_grillejeux, text="Reset", command=reset_grille)
-bouton_reset.pack(pady=30) #fonctionement pady https://infoforall.fr/python/python-act110.html
 
 #fonction sauvegarder/charger pour l'instant
 
@@ -262,17 +257,17 @@ def check_gagnant(grille):
 
 
 #Tous les bontons a afficher : 
-bouton_reset = tk.Button(frame_boutons, text="Reset", command=reset_grille)
+bouton_reset = tk.Button(frame_boutons, text="Nettoyer la grille", command=reset_grille)
 bouton_reset.pack(side=tk.LEFT, padx=10)
+
+bouton_nvl_partie = tk.Button(frame_boutons, text = "Recommencer", command = nouvelle_partie)
+bouton_nvl_partie.pack(side=tk.LEFT, padx=10)
 
 bouton_sauvegarder = tk.Button(frame_boutons, text="Sauvegarder", command=sauvegarder_partie)
 bouton_sauvegarder.pack(side=tk.LEFT, padx=10)
 
 bouton_charger = tk.Button(frame_boutons, text="Charger", command=charger_partie)
 bouton_charger.pack(side=tk.LEFT, padx=10)
-
-bouton_nvl_partie = tk.Button(frame_boutons, text = "Nouvelle partie", command = nouvelle_partie)
-bouton_nvl_partie.pack(side=tk.LEFT, padx=10)
 
 
 fenetre_grillejeux.mainloop()
