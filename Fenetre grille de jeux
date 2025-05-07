@@ -131,8 +131,7 @@ def reset_grille():
 
 #bouton pour renitialiser la grille en cours de jeux : 
 
-bouton_reset = tk.Button(fenetre_grillejeux, text="Reset", command=reset_grille)
-bouton_reset.pack(pady=30) #fonctionement pady https://infoforall.fr/python/python-act110.html
+#fonctionement pady https://infoforall.fr/python/python-act110.html
 
 #fonction sauvegarder/charger pour l'instant
 
