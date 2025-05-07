@@ -99,12 +99,12 @@ jetons_chien_chat = ImageTk.PhotoImage(jetons_chien_chat)
 bouton_jetons3 = tk.Button(fenetre_parametres, text = "", width = 100, height = 100, image = jetons_chien_chat, compound = "center", bd = 0, highlightthickness = 0, bg = '#ffd88e', command = lambda: choix_jetons("chien-chat"))
 bouton_jetons3.place(x = 390, y = 320)
 
-'''
-jetons_nous = Image.open("Thème chien-chat jetons.png")
+
+jetons_nous = Image.open("Double jetons perso.png")
 jetons_nous = ImageTk.PhotoImage(jetons_nous)
 bouton_jetons3 = tk.Button(fenetre_parametres, text = "", width = 100, height = 100, image = jetons_nous, compound = "center", bd = 0, highlightthickness = 0, bg = '#ffd88e', command = lambda: choix_jetons("nous"))
 bouton_jetons3.place(x = 590, y = 320)
-'''
+
 
 jetons_fleurs = Image.open("Thème fleurs jetons.png")
 jetons_fleurs = ImageTk.PhotoImage(jetons_fleurs)
