@@ -1,4 +1,5 @@
 #Grille jeux + alternance jetons/joueurs + sauvegarde/charger partie Maya : 
+# + check gagnant/match nul + nouvelle partie + quelques modifs Kinga
 
 #biblio nécessaire
 import tkinter as tk
@@ -32,6 +33,13 @@ fenetre_grillejeux.geometry("1300x700")
 fenetre_grillejeux.title("Grille de jeux")
 fenetre_grillejeux.state('zoomed')
 
+# Compteur de victoires
+victoires_joueur1 = 0
+victoires_joueur2 = 0
+
+# Label message gagnant dans le canvas
+label_resultat = tk.Label(fenetre_grillejeux, text="Que le meilleur gagne ! 🎯", font=("Impact", 50))
+label_resultat.pack(pady=(30, 0))
 
 #frames pour séparer canvas et boutons normalement aide si boutons apparaissent pas sur votre écran (normalement)
 frame_canvas = tk.Frame(fenetre_grillejeux)
@@ -80,12 +88,14 @@ def tracer_grille(grille):
 # Alors j'ai pensé un peu au placement des jetons par clic, c'est pas encore ça + faut alterner les joueurs mieux mais l'idée est là
 # doc thinker event : https://docs.python.org/3/library/tkinter.html#bindings-and-events
 
+
+# Kinga : J'ai modifié cette fonction comme ca si y a une colonne remplie il se passe rien qd on appuie
 def ajouter_jeton(grille, col, J):
     for i in range(0, lignes):
         if grille[i][col] == 0:
             grille[i][col] = J
-            break
-    return grille
+            return True             # Jeton placé
+    return False                    # Si colonne remplie
 
 
 def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
@@ -98,17 +108,49 @@ def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
     else:  
         J = 2 #là sera jaune 
 
-    grille = ajouter_jeton(grille, colonne_clique, J)  
-    tracer_grille(grille)  
-    cmpt += 1 
-    historique_coups.append(colonne_clique) 
-
+    coup_valide = ajouter_jeton(grille, colonne_clique, J)      # Kinga : idem ici
+    if coup_valide == False :
+        return grille, cmpt
+    
+    tracer_grille(grille)
+    cmpt += 1
     return grille, cmpt
 
 #pour gérer le nbr de clic/alternance
+# Kinga : ajout des coups gagnant/ match nul
 def clic_canvas(event):
     global grille, cmpt
+
+        # On joue le coup
     grille, cmpt = alternance_joueur(event, grille, taille_case, colonnes, cmpt)
+
+        # Puis on vérifie s'il y a un gagnant
+    gagnant = check_gagnant(grille)
+
+    if gagnant != 0:
+        couleur = "Rouge" if gagnant == 1 else "Jaune"
+        if gagnant == 1:
+            global victoires_joueur1
+            victoires_joueur1 += 1
+            label_resultat.config(text=f"Rouge a gagné ! 🎉", fg="red")
+        else:
+            global victoires_joueur2
+            victoires_joueur2 += 1
+            label_resultat.config(text=f"Jaune a gagné ! 🎉", fg="#FFD700")
+        
+        canvas.unbind("<Button-1>")         # Désactive les clics
+
+
+    # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
+    elif np.all(grille != 0):
+        label_resultat.config(text="Match nul ! 😅", fg = "black")
+        canvas.unbind("<Button-1>")         # Désactive les clics
+
+
+    if gagnant == 0 and not np.all(grille != 0):
+        prochain_joueur = "Rouge" if cmpt % 2 == 0 else "Jaune"
+        couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
+        label_resultat.config(text=f"À {prochain_joueur} de jouer !", fg=couleur_texte)
 
 
 cmpt = 0 #début compteur
@@ -127,11 +169,16 @@ def reset_grille():
     tracer_grille(grille)
     message_label.config(text="Grille bien réinitialisée", fg="orange")
     fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
-
+    canvas.bind("<Button-1>", clic_canvas)      # On réactive les clics
+    label_resultat.config(                      # Efface le message de victoire
+    text=f"Rouge - {victoires_joueur1}  ||  Jaune - {victoires_joueur2}",
+        fg="black"
+    )
 
 #bouton pour renitialiser la grille en cours de jeux : 
 
-#fonctionement pady https://infoforall.fr/python/python-act110.html
+bouton_reset = tk.Button(fenetre_grillejeux, text="Reset", command=reset_grille)
+bouton_reset.pack(pady=30) #fonctionement pady https://infoforall.fr/python/python-act110.html
 
 #fonction sauvegarder/charger pour l'instant
 
@@ -164,6 +211,43 @@ def charger_partie():
     message_label.config(text=f"Partie chargée à partir de {nom_fichier}", fg="blue")
     fenetre_grillejeux.after(3000, lambda: message_label.config(text=""))
 
+def nouvelle_partie():
+    global grille, cmpt, victoires_joueur1, victoires_joueur2
+    grille = creation_grille()
+    cmpt = 0
+    victoires_joueur1 = 0
+    victoires_joueur2 = 0
+    tracer_grille(grille)
+    canvas.bind("<Button-1>", clic_canvas)
+    label_resultat.config(text="Que le meilleur gagne ! 🎯", fg="black")
+
+def check_gagnant(grille):
+    lignes, colonnes = grille.shape
+
+    for ligne in range(lignes):
+        for col in range(colonnes):
+            joueur = grille[ligne][col]
+            if joueur == 0:
+                continue
+
+            # Horizontal
+            if col + 3 < colonnes and all(grille[ligne][col + i] == joueur for i in range(4)):
+                return joueur
+
+            # Vertical
+            if ligne + 3 < lignes and all(grille[ligne + i][col] == joueur for i in range(4)):
+                return joueur
+
+            # Diagonale descendante
+            if ligne + 3 < lignes and col + 3 < colonnes and all(grille[ligne + i][col + i] == joueur for i in range(4)):
+                return joueur
+
+            # Diagonale montante
+            if ligne - 3 >= 0 and col + 3 < colonnes and all(grille[ligne - i][col + i] == joueur for i in range(4)):
+                return joueur
+
+    return 0  # pas de gagnant
+
 
 #Tous les bontons a afficher : 
 bouton_reset = tk.Button(frame_boutons, text="Reset", command=reset_grille)
@@ -174,6 +258,9 @@ bouton_sauvegarder.pack(side=tk.LEFT, padx=10)
 
 bouton_charger = tk.Button(frame_boutons, text="Charger", command=charger_partie)
 bouton_charger.pack(side=tk.LEFT, padx=10)
+
+bouton_nvl_partie = tk.Button(frame_boutons, text = "Nouvelle partie", command = nouvelle_partie)
+bouton_nvl_partie.pack(side=tk.LEFT, padx=10)
 
 
 fenetre_grillejeux.mainloop()
