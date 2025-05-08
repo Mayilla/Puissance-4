@@ -477,24 +477,49 @@ def f_fenetre_grille_jeux():
     label_fond.place(x=0, y=0, relwidth=1, relheight=1)
 
 
-    # Choix du thème des jetons ==> à relier avec fenetre paramètres
-    jeton_joueur_1 = Image.open("Thème chat jetons.png").resize((taille_case - 19, taille_case - 19))
-    jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
-    jeton_joueur_2 = Image.open("Thème chien jetons.png").resize((taille_case - 19, taille_case - 19))
-    jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
+    # Choix des jetons selon la sélection
+    if theme_jetons_selectionne == "rouge-jaune":
+        jeton_joueur_1 = Image.open("Thème jaune jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
+        jeton_joueur_2 = Image.open("Thème rouge jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
+    elif theme_jetons_selectionne == "chien-chat":
+        jeton_joueur_1 = Image.open("Thème chat jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
+        jeton_joueur_2 = Image.open("Thème chien jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
+    elif theme_jetons_selectionne == "fleurs":
+        jeton_joueur_1 = Image.open("Thème fleur rose jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
+        jeton_joueur_2 = Image.open("Thème fleur blanche jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
+    elif theme_jetons_selectionne == "nous":
+        jeton_joueur_1 = Image.open("Jeton perso Kinga-Rehan.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
+        jeton_joueur_2 = Image.open("Jeton perso Loïs-Maya.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
+    elif theme_jetons_selectionne == "robot":
+        jeton_joueur_1 = Image.open("Thème robot jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
+        jeton_joueur_2 = Image.open("Thème robot jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
 
-    # Choix du thème de la grille ==> à relier avec fenetre paramètres
-    grille_theme = Image.open("Thème nature grille.png").resize((colonnes*taille_case, (lignes + 1)*taille_case), Image.Resampling.LANCZOS)
-    grille_theme = ImageTk.PhotoImage(grille_theme)
 
+    # Choix du thème de la grille selon la sélection
     if grille_theme_selectionne == "bleu":
-        grille_theme = Image.open("Thème bleu grille").resize((colonnes*taille_case, (lignes + 1)*taille_case), Image.Resampling.LANCZOS)
+        grille_theme = Image.open("Thème bleu grille.png").resize((colonnes*taille_case, (lignes + 1)*taille_case), Image.Resampling.LANCZOS)
         grille_theme = ImageTk.PhotoImage(grille_theme)
     elif grille_theme_selectionne == "bois":
         grille_theme = Image.open("Thème bois grille.png").resize((colonnes*taille_case, (lignes + 1)*taille_case), Image.Resampling.LANCZOS)
         grille_theme = ImageTk.PhotoImage(grille_theme)
     elif grille_theme_selectionne == "enfants":
         grille_theme = Image.open("Thème enfants grille.png").resize((colonnes*taille_case, (lignes + 1)*taille_case), Image.Resampling.LANCZOS)
+        grille_theme = ImageTk.PhotoImage(grille_theme)
+    elif grille_theme_selectionne == "nature":
+        grille_theme = Image.open("Thème nature grille.png").resize((colonnes*taille_case, (lignes + 1)*taille_case), Image.Resampling.LANCZOS)
+        grille_theme = ImageTk.PhotoImage(grille_theme)
+    elif grille_theme_selectionne == "game":
+        grille_theme = Image.open("Thème game grille.png").resize((colonnes*taille_case, (lignes + 1)*taille_case), Image.Resampling.LANCZOS)
         grille_theme = ImageTk.PhotoImage(grille_theme)
 
 
