@@ -411,9 +411,6 @@ def f_fenetre_parametres():
 historique_coups = []
 
 
-
-#https://docs.python.org/3/library/tkinter.html
-
 # Taille de la grille de jeux
 lignes = 6
 colonnes = 7
@@ -518,7 +515,7 @@ def f_fenetre_grille_jeux():
     # Compteur de victoires
     victoires_joueur_1 = 0
     victoires_joueur_2 = 0
-    manche = random.randint(1, 2)
+    manche = random.randint(0,1)
     cmpt = 0
 
 
@@ -533,10 +530,10 @@ def f_fenetre_grille_jeux():
 
 
     # Ajouter un espace vide au-dessus du canvas
-    frame_espace = tk.Frame(fenetre_grillejeux, height=50, bg="#ffd88e")  # Ajustez la hauteur (50) selon vos besoins
+    frame_espace = tk.Frame(fenetre_grillejeux, height=50, bg="#ffd88e")
     frame_espace.pack(fill=tk.X)
 
-    #frames pour séparer canvas et boutons normalement aide si boutons apparaissent pas sur votre écran (normalement)
+    # Frames pour séparer canvas et boutons normalement aide si boutons apparaissent pas sur votre écran (normalement)
     frame_canvas = tk.Frame(fenetre_grillejeux)
     frame_canvas.pack()
 
