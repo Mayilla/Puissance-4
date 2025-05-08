@@ -657,6 +657,42 @@ def f_fenetre_grille_jeux():
             canvas.unbind("<Button-1>")
             label_joueur.config(text='')
 
+        # Confettis
+        confettis = []
+
+        def animer_confettis():
+            for confetti, vitesse in confettis:
+                canvas.move(confetti, 0, vitesse)                   # x = 0, y = vitesse
+            canvas.after(50, animer_confettis)                      # Rappelle la fonction tte les 50ms
+            # https://sites.google.com/site/pythonpasapas/modules/tkinter/tkinter-methodes/tkinter-after -> pour le .after
+
+        def lancer_confettis():
+            for i in range(120):                                     # 70 confettis
+                x = random.randint(0, colonnes * taille_case)       # Position aléatoire
+                y = random.randint(0, 50)
+                r = random.randint(5, 15)
+                couleur = random.choice(["red", "yellow", "green", "light green", "light blue", "orange", "purple","magenta", "pink"])
+                confetti = canvas.create_oval(x, y, x + r, y + r, fill=couleur, outline="")         # C'est des petits ronds
+                vitesse = random.randint(2, 13)                # vitesse en pixel par image
+                confettis.append((confetti, vitesse))          # (objet, vitesse)
+
+            animer_confettis()
+
+
+        if manche == 1:
+            bouton_reset.pack_forget()
+            if victoires_joueur_1 > victoires_joueur_2:
+                label_resultat.config(text=f"{nom_j1} a gagné la partie ! 🎉", font=("Impact", 50), fg="red")
+                lancer_confettis()
+            elif victoires_joueur_2 > victoires_joueur_1:
+                label_resultat.config(text=f"{nom_j2} a gagné la partie ! 🎉", font=("Impact", 50), fg="#FFD700")
+                lancer_confettis()
+            elif victoires_joueur_1 == victoires_joueur_2:
+                label_resultat.config(text="Match nul ! 😅", font=("Impact", 50), fg="black")
+                lancer_confettis()
+                
+
+
         # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
         elif np.all(grille != 0):
             label_resultat.config(text="Match nul ! 😅", fg = "black")
