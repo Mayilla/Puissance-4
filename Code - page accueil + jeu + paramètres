@@ -6,6 +6,7 @@ from PIL import Image, ImageTk
 import numpy as np
 from tkinter import filedialog
 import json
+import random
 
 ###########################################################################################################################################
 ###########################################################################################################################################
@@ -73,16 +74,18 @@ joueur_1 = 'humain'
 joueur_2 = 'humain'
 texte_joueur_1 = "-"
 texte_joueur_2 = "-"
+nom_j1 = None
+nom_j2 = None
 
 
 def f_fenetre_nombre_joueur():
-    global joueur_1, joueur_2, texte_joueur_1, texte_joueur_2
+    global joueur_1, joueur_2 , texte_joueur_1, texte_joueur_2, nom_j1, nom_j2
 
     # Création de la fenêtre
     fenetre_nom_joueur = tk.Toplevel()
     fenetre_nom_joueur.geometry("1300x700")
     fenetre_nom_joueur.title("Nombre de joueurs")
-    fenetre_nom_joueur.state('zoomed') # Plein écran
+    fenetre_nom_joueur.state('zoomed') 
     fenetre_nom_joueur.configure(bg='#ffd88e')
 
     # Charger les images
@@ -125,24 +128,26 @@ def f_fenetre_nombre_joueur():
 
 
         # Fonction pour enregistrer le texte saisi sous le bouton 1
-    def enregistrer_texte_1():
-        global texte_joueur_1
+    def enregistrer_texte_1(nom):
+        global texte_joueur_1, nom_j1
         texte_joueur_1 = champ_texte_1.get()
+        nom_j1 = nom
         print(f"Texte enregistré pour le bouton 1 : {texte_joueur_1}")
         mettre_a_jour_label_noms()
 
 
         # Fonction pour enregistrer le texte saisi sous le bouton 2
-    def enregistrer_texte_2():
-        global texte_joueur_2
+    def enregistrer_texte_2(nom):
+        global texte_joueur_2, nom_j2
         texte_joueur_2 = champ_texte_2.get()
+        nom_j2 = nom
         print(f"Texte enregistré pour le bouton 2 : {texte_joueur_2}")
         mettre_a_jour_label_noms()
 
 
         # Fonction pour changer l'image du bouton joueur 1
     def changer_image():
-        global joueur_1, joueur_2, texte_joueur_1, image1, image2, image3
+        global joueur_1, joueur_2, texte_joueur_1
         if joueur_2 == 'robot':
             return
         if bouton_1["image"] == str(image1):
@@ -236,10 +241,10 @@ def f_fenetre_nombre_joueur():
 
 
         # Boutons pour enregistrer le texte
-    bouton_enregistrer_1 = tk.Button(fenetre_nom_joueur, text = "Enregistrer", font =("Helvetica", 10), bg = "#a97c11", fg = "#ffecaf", command = enregistrer_texte_1)
+    bouton_enregistrer_1 = tk.Button(fenetre_nom_joueur, text = "Enregistrer", font =("Helvetica", 10), bg = "#a97c11", fg = "#ffecaf", command = lambda: enregistrer_texte_1(champ_texte_1.get()))
     bouton_enregistrer_1.place(relx=0.4, rely=0.59, anchor = "center")
 
-    bouton_enregistrer_2 = tk.Button(fenetre_nom_joueur, text = "Enregistrer", font = ("Helvetica", 10), bg = "#a97c11", fg = "#ffecaf", command = enregistrer_texte_2)
+    bouton_enregistrer_2 = tk.Button(fenetre_nom_joueur, text = "Enregistrer", font = ("Helvetica", 10), bg = "#a97c11", fg = "#ffecaf", command = lambda: enregistrer_texte_2(champ_texte_2.get()))
     bouton_enregistrer_2.place(relx=0.6, rely=0.59, anchor = "center")
 
 
@@ -265,10 +270,6 @@ def f_fenetre_nombre_joueur():
 
     # On affiche la fenêtre
     fenetre_nom_joueur.mainloop()
-
-
-###########################################################################################################################################
-###########################################################################################################################################
 
 
 
@@ -320,7 +321,7 @@ def f_fenetre_parametres():
     text_grille.place(x = 70, y = 125)
 
             # Boutons pour le choix de la grille
-    grille_bleue = Image.open("C:/Users/loisc/OneDrive/Bureau/Université/1ère année/Semestre 2/Informatique - bases de Python/Puissance_4/Thème bleu grille.png")
+    grille_bleue = Image.open("Thème bleu grille.png")
     grille_bleue = ImageTk.PhotoImage(grille_bleue)
     bouton_grille1 = tk.Button(fenetre_parametres, text = "", width=110, height=70, image=grille_bleue, compound="center", command = lambda: choix_grille("bleu"))
     bouton_grille1.place(x = 180, y = 170)
@@ -403,11 +404,13 @@ def f_fenetre_parametres():
 
 ###########################################################################################################################################
 ###########################################################################################################################################
-# Code de la grille de jeu 
+# Code de la grille de jeu / Maya
 # + alternance jetons/joueurs 
 # + sauvegarde/charger 
 
 historique_coups = []
+
+
 
 #https://docs.python.org/3/library/tkinter.html
 
@@ -419,15 +422,13 @@ rayon = int(taille_case /2-5)
 
 
 # Couleurs utilisées : 
-#Alors pour l'instant j'ai juste mis les couleur du jeux de base, a voir par la suite si on modifie
-
 bleu = (0, 0, 255)  
 rouge = (255, 0, 0)  
 jaune = (255, 255, 0)
 noir = (0,0,0)
 
 def f_fenetre_grille_jeux():
-    global grille_theme_selectionne, theme_jetons_selectionne, taille_selectionnee, lignes, colonnes, taille_case, jeton_joueur_1, jeton_joueur_2, grille_theme
+    global grille_theme_selectionne, theme_jetons_selectionne, taille_selectionnee, lignes, colonnes, taille_case, jeton_joueur_1, jeton_joueur_2, grille_theme, nom_j1, nom_j2, victoires_joueur_1, victoires_joueur_2
 
     # Récupérer les thèmes et la taille sélectionnés
     if 'theme_grille_selectionne' in globals():
@@ -454,27 +455,11 @@ def f_fenetre_grille_jeux():
     elif taille_selectionnee == "4":
         lignes = 6
         colonnes = 7
-        taille_case = 70
+        taille_case = 50
     elif taille_selectionnee == "5":
         lignes = 7
         colonnes = 8
         taille_case = 70
-
-
-    # Création fenêtre
-    fenetre_grillejeux = tk.Toplevel()
-    fenetre_grillejeux.geometry("800x500")
-    fenetre_grillejeux.title("Grille de jeux")
-    fenetre_grillejeux.state('zoomed')
-    # Fond de la fenêtre
-        # Charger l'image de fond
-    fond_image = Image.open("Image fond jaune.png")
-    fond_photo = ImageTk.PhotoImage(fond_image)
-
-        # Créer le label pour l'image de fond
-
-    label_fond = tk.Label(fenetre_grillejeux, image=fond_photo)
-    label_fond.place(x=0, y=0, relwidth=1, relheight=1)
 
 
     # Choix des jetons selon la sélection
@@ -523,6 +508,30 @@ def f_fenetre_grille_jeux():
         grille_theme = ImageTk.PhotoImage(grille_theme)
 
 
+    # Création fenêtre
+    fenetre_grillejeux = tk.Toplevel()
+    fenetre_grillejeux.geometry("800x500")
+    fenetre_grillejeux.title("Grille de jeux")
+    fenetre_grillejeux.state('zoomed')
+    fenetre_grillejeux.configure(bg='#ffd88e')
+
+    # Compteur de victoires
+    victoires_joueur_1 = 0
+    victoires_joueur_2 = 0
+    manche = random.randint(1, 2)
+    cmpt = 0
+
+
+    # Label message gagnant dans le canvas
+    label_resultat = tk.Label(fenetre_grillejeux, text="Que le meilleur gagne ! 🎯", font=("Impact", 50))
+    label_resultat.pack(pady=(30, 0))
+
+    prochain_joueur = nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
+    couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
+    label_joueur = tk.Label(fenetre_grillejeux, text = f"{prochain_joueur} commence !", font=("Impact", 20), fg = couleur_texte)
+    label_joueur.pack()
+
+
     # Ajouter un espace vide au-dessus du canvas
     frame_espace = tk.Frame(fenetre_grillejeux, height=50, bg="#ffd88e")  # Ajustez la hauteur (50) selon vos besoins
     frame_espace.pack(fill=tk.X)
@@ -542,7 +551,7 @@ def f_fenetre_grille_jeux():
 
     # Création grille de base donc vide
     def creation_grille():
-        grille = np.zeros((lignes, colonnes))  #soit matrice 6x7
+        grille = np.zeros((lignes, colonnes))
         return grille
 
     grille = creation_grille() 
@@ -553,7 +562,7 @@ def f_fenetre_grille_jeux():
     message_label = tk.Label(fenetre_grillejeux, text="", font=("Arial", 14), fg="green")
     message_label.pack(pady=10)
 
-
+    # Fonction pour tracer la grille et les emplacements vides
     def tracer_grille(grille):
         canvas.delete("all") 
 
@@ -603,78 +612,94 @@ def f_fenetre_grille_jeux():
                     )
 
 
-
-    #décalage pour l'instant en fonction de la taille grille mais a rendre modifiable
-
-    # Alors j'ai pensé un peu au placement des jetons par clic, c'est pas encore ça + faut alterner les joueurs mieux mais l'idée est là
-    # doc thinker event : https://docs.python.org/3/library/tkinter.html#bindings-and-events
-
+    # Fonction pour ajouter un jeton dans la grille
     def ajouter_jeton(grille, col, J):
         for i in range(0, lignes):
             if grille[i][col] == 0:
                 grille[i][col] = J
-                break
-        return grille
+                return True
+        return False  # Si la colonne est pleine, ne rien faire
 
 
     def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
         colonne_clique = event.x // taille_case  #position x de la souris donc la colonne choisie
         if colonne_clique >= colonnes:
             return grille, cmpt
-
-        if cmpt % 2 == 0: 
-            J = 1 #là sera rouge
+        
+        if (cmpt + manche) % 2 == 0:
+            J = 1 #là sera joueur 1
         else:  
-            J = 2 #là sera jaune 
+            J = 2 #là sera joueur 2
 
-        grille = ajouter_jeton(grille, colonne_clique, J)  
+        coup_valide = ajouter_jeton(grille, colonne_clique, J)
+        if coup_valide == False:
+            return grille, cmpt
+ 
         tracer_grille(grille)  
         cmpt += 1 
-        historique_coups.append(colonne_clique) 
-
         return grille, cmpt
 
     #pour gérer le nbr de clic/alternance
     def clic_canvas(event):
-        global grille, cmpt
-        colonne_clique = event.x // taille_case  # Déterminer la colonne cliquée
-        if colonne_clique >= colonnes:
-            return  # Si la colonne est invalide, ne rien faire
+        global grille, cmpt, victoires_joueur_1, victoires_joueur_2
 
-        # Déterminer le joueur actuel
-        joueur = 1 if cmpt % 2 == 0 else 2
+        # On joue le coup et on vérifie si il y a un gagnant
+        grille, cmpt = alternance_joueur(event, grille, taille_case, colonnes, cmpt)
+        gagnant = check_gagnant(grille)
 
-        # Ajouter le jeton dans la grille
-        grille = ajouter_jeton(grille, colonne_clique, joueur)
+        if gagnant != 0:
+            if gagnant == 1:
+                global victoires_joueur_1
+                victoires_joueur_1 += 1
+                label_resultat.config(text=f"{nom_j1} a gagné ! 🎉", font=("Impact", 50), fg="red")
+            else:
+                global victoires_joueur_2
+                victoires_joueur_2 += 1
+                label_resultat.config(text=f"{nom_j2} a gagné ! 🎉", font=("Impact", 50), fg="#FFD700")
 
-        # Redessiner la grille
-        tracer_grille(grille)
+            canvas.unbind("<Button-1>")
+            label_joueur.config(text='')
 
-        # Incrémenter le compteur de tours
-        cmpt += 1
+        # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
+        elif np.all(grille != 0):
+            label_resultat.config(text="Match nul ! 😅", fg = "black")
+            canvas.unbind("<Button-1>")         # Désactive les clics
 
+
+        if gagnant == 0 and not np.all(grille != 0):
+            prochain_joueur= nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
+            couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
+            label_resultat.config(text=f"À {prochain_joueur} de jouer !", fg=couleur_texte)
+
+        
+        label_joueur.config(text = "")
 
 
     cmpt = 0 #début compteur
+    canvas.bind("<Button-1>", clic_canvas)  # Lier le clic gauche de la souris à la fonction clic_canvas
+    tracer_grille(grille)  # Tracer la grille initiale
 
-    canvas.bind("<Button-1>", clic_canvas)
 
-    tracer_grille(grille)
-
-    #Remettre a zero la grille à chaque ouverture de la fenetre :
+    #Remettre à zéro la grille à chaque ouverture de la fenêtre :
 
     def reset_grille():
-        global grille, cmpt, historique_coups
+        global grille, cmpt, historique_coups, manche
+        manche += 1
         grille = creation_grille()  
         cmpt = 0  # clic 0
         historique_coups.clear()  #pour éviter historique garde ancien coups
         tracer_grille(grille)
         message_label.config(text="Grille bien réinitialisée", font=("Comic Sans MS", 12, "bold"), fg = "#a97c11", bg = "#ffd88e")
         fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
+        canvas.bind("<Button-1>", clic_canvas)  # Réactiver le clic gauche de la souris
+        label_resultat.config(text=f"{nom_j1} - {victoires_joueur_1}  ||  {nom_j2} - {victoires_joueur_2}", fg="black")
+        prochain_joueur= nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
+        couleur_texte = "red" if prochain_joueur == nom_j1 else "#FFD700"
+        label_joueur.config(text=f"{prochain_joueur} commence !", font=("Impact", 20), fg=couleur_texte)
 
 
-    #fonction sauvegarder/charger pour l'instant
 
+    #fonction sauvegarder/charger
     def sauvegarder_partie():
         nom_fichier = filedialog.asksaveasfilename(defaultextension=".json", filetypes=[("Fichier JSON", "*.json")]) #comme ça on écrit ce qu'on veut comme nom
         if not nom_fichier:
@@ -704,10 +729,55 @@ def f_fenetre_grille_jeux():
         message_label.config(text=f"Partie chargée à partir de {nom_fichier}", fg="blue")
         fenetre_grillejeux.after(3000, lambda: message_label.config(text=""))
 
+    def nouvelle_partie():
+        global grille, cmpt, victoires_joueur_1, victoires_joueur_2, manche
+        manche = random.randint(0, 1)
+        grille = creation_grille()
+        cmpt = 0
+        victoires_joueur_1 = 0
+        victoires_joueur_2 = 0
+        tracer_grille(grille)
+        canvas.bind("<Button-1>", clic_canvas)
+        label_resultat.config(text="Que le meilleur gagne ! 🎯", fg="black")
+        label_resultat.config(text=f"{nom_j1} - {victoires_joueur_1}  ||  {nom_j2} - {victoires_joueur_2}", fg="black")
+        prochain_joueur = nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
+        couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
+        label_joueur.config(text = f"{prochain_joueur} commence !", fg = couleur_texte)
 
-    #Tous les bontons a afficher : 
-    bouton_reset = tk.Button(frame_boutons, text="Reset", font=("Comic Sans MS", 10, "bold"), bg = "#a97c11", fg = "#ffd88e", command=reset_grille)
+    def check_gagnant(grille):
+        lignes, colonnes = grille.shape
+
+        for ligne in range(lignes):
+            for col in range(colonnes):
+                joueur = grille[ligne][col]
+                if joueur == 0:
+                    continue
+
+                # Horizontal
+                if col + 3 < colonnes and all(grille[ligne][col + i] == joueur for i in range(4)):
+                    return joueur
+
+                # Vertical
+                if ligne + 3 < lignes and all(grille[ligne + i][col] == joueur for i in range(4)):
+                    return joueur
+
+                # Diagonale descendante
+                if ligne + 3 < lignes and col + 3 < colonnes and all(grille[ligne + i][col + i] == joueur for i in range(4)):
+                    return joueur
+
+                # Diagonale montante
+                if ligne - 3 >= 0 and col + 3 < colonnes and all(grille[ligne - i][col + i] == joueur for i in range(4)):
+                    return joueur
+
+        return 0  # pas de gagnant
+
+
+    # Tous les bontons a afficher : 
+    bouton_reset = tk.Button(frame_boutons, text="Nouvelle partie", font=("Comic Sans MS", 10, "bold"), bg = "#a97c11", fg = "#ffd88e", command=reset_grille)
     bouton_reset.pack(side=tk.LEFT, padx=10)
+
+    bouton_nvl_partie = tk.Button(frame_boutons, text = "Tout recommencer", font=("Comic Sans MS", 10, "bold"), bg = "#a97c11", fg = "#ffd88e", command = nouvelle_partie)
+    bouton_nvl_partie.pack(side=tk.LEFT, padx=10)
 
     bouton_sauvegarder = tk.Button(frame_boutons, text="Sauvegarder", font=("Comic Sans MS", 10, "bold"), bg = "#a97c11", fg = "#ffd88e", command=sauvegarder_partie)
     bouton_sauvegarder.pack(side=tk.LEFT, padx=10)
@@ -715,6 +785,7 @@ def f_fenetre_grille_jeux():
     bouton_charger = tk.Button(frame_boutons, text="Charger", font=("Comic Sans MS", 10, "bold"), bg = "#a97c11", fg = "#ffd88e", command=charger_partie)
     bouton_charger.pack(side=tk.LEFT, padx=10)
 
+    nouvelle_partie()
 
     fenetre_grillejeux.mainloop()
 
