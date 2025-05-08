@@ -518,6 +518,7 @@ def f_fenetre_grille_jeux():
     manche = random.randint(0,1)
     cmpt = 0
 
+    nb_de_manches == 1              # À MODIFIER 
 
     # Label message gagnant dans le canvas
     label_resultat = tk.Label(fenetre_grillejeux, text="Que le meilleur gagne ! 🎯", font=("Impact", 50))
@@ -657,29 +658,7 @@ def f_fenetre_grille_jeux():
             canvas.unbind("<Button-1>")
             label_joueur.config(text='')
 
-        # Confettis
-        confettis = []
-
-        def animer_confettis():
-            for confetti, vitesse in confettis:
-                canvas.move(confetti, 0, vitesse)                   # x = 0, y = vitesse
-            canvas.after(50, animer_confettis)                      # Rappelle la fonction tte les 50ms
-            # https://sites.google.com/site/pythonpasapas/modules/tkinter/tkinter-methodes/tkinter-after -> pour le .after
-
-        def lancer_confettis():
-            for i in range(120):                                     # 70 confettis
-                x = random.randint(0, colonnes * taille_case)       # Position aléatoire
-                y = random.randint(0, 50)
-                r = random.randint(5, 15)
-                couleur = random.choice(["red", "yellow", "green", "light green", "light blue", "orange", "purple","magenta", "pink"])
-                confetti = canvas.create_oval(x, y, x + r, y + r, fill=couleur, outline="")         # C'est des petits ronds
-                vitesse = random.randint(2, 13)                # vitesse en pixel par image
-                confettis.append((confetti, vitesse))          # (objet, vitesse)
-
-            animer_confettis()
-
-
-        if manche == 1:
+        if manche == nb_de_manches :
             bouton_reset.pack_forget()
             if victoires_joueur_1 > victoires_joueur_2:
                 label_resultat.config(text=f"{nom_j1} a gagné la partie ! 🎉", font=("Impact", 50), fg="red")
@@ -712,7 +691,27 @@ def f_fenetre_grille_jeux():
     canvas.bind("<Button-1>", clic_canvas)  # Lier le clic gauche de la souris à la fonction clic_canvas
     tracer_grille(grille)  # Tracer la grille initiale
 
+    confettis = []
 
+    def animer_confettis():
+        for confetti, vitesse in confettis:
+            canvas.move(confetti, 0, vitesse)                   # x = 0, y = vitesse
+        canvas.after(50, animer_confettis)                      # Rappelle la fonction tte les 50ms
+        # https://sites.google.com/site/pythonpasapas/modules/tkinter/tkinter-methodes/tkinter-after -> pour le .after
+
+    def lancer_confettis():
+        for i in range(120):                                     # 70 confettis
+            x = random.randint(0, colonnes * taille_case)       # Position aléatoire
+            y = random.randint(0, 50)
+            r = random.randint(5, 15)
+            couleur = random.choice(["red", "yellow", "green", "light green", "light blue", "orange", "purple","magenta", "pink"])
+            confetti = canvas.create_oval(x, y, x + r, y + r, fill=couleur, outline="")         # C'est des petits ronds
+            vitesse = random.randint(2, 13)                # vitesse en pixel par image
+            confettis.append((confetti, vitesse))          # (objet, vitesse)
+
+        animer_confettis()
+
+        
     #Remettre à zéro la grille à chaque ouverture de la fenêtre :
 
     def reset_grille():
