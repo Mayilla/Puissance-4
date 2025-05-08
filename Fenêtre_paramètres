@@ -59,7 +59,7 @@ text_grille = tk.Label(fenetre_parametres, text = "Thème de la grille :", font=
 text_grille.place(x = 70, y = 125)
 
         # Boutons pour le choix de la grille
-grille_bleue = Image.open("Thème bleu grille.png")
+grille_bleue = Image.open("C:/Users/loisc/OneDrive/Bureau/Université/1ère année/Semestre 2/Informatique - bases de Python/Puissance_4/Thème bleu grille.png")
 grille_bleue = ImageTk.PhotoImage(grille_bleue)
 bouton_grille1 = tk.Button(fenetre_parametres, text = "", width=110, height=70, image=grille_bleue, compound="center", command = lambda: choix_grille("bleu"))
 bouton_grille1.place(x = 180, y = 170)
