@@ -45,22 +45,32 @@ label_fond.place(x=0, y=0, relwidth=1, relheight=1)
 
 
 # Choix du thème des jetons ==> à relier avec fenetre paramètres
-jeton_joueur_1 = Image.open("Thème chat jetons.png").resize((taille_case - 20, taille_case - 20))
+jeton_joueur_1 = Image.open("Thème chat jetons.png").resize((taille_case - 19, taille_case - 19))
 jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
-jeton_joueur_2 = Image.open("Thème chien jetons.png").resize((taille_case - 20, taille_case - 20))
+jeton_joueur_2 = Image.open("Thème chien jetons.png").resize((taille_case - 19, taille_case - 19))
 jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
 
+# Choix du thème de la grille ==> à relier avec fenetre paramètres
+grille_theme = Image.open("Thème nature grille.png").resize((colonnes*taille_case, (lignes + 1)*taille_case), Image.Resampling.LANCZOS)
+grille_theme = ImageTk.PhotoImage(grille_theme)
+
+
+# Ajouter un espace vide au-dessus du canvas
+frame_espace = tk.Frame(fenetre_grillejeux, height=50, bg="#ffd88e")  # Ajustez la hauteur (50) selon vos besoins
+frame_espace.pack(fill=tk.X)
 
 #frames pour séparer canvas et boutons normalement aide si boutons apparaissent pas sur votre écran (normalement)
 frame_canvas = tk.Frame(fenetre_grillejeux)
 frame_canvas.pack()
 
-frame_boutons = tk.Frame(fenetre_grillejeux)
+frame_boutons = tk.Frame(fenetre_grillejeux, bg="#ffd88e")
 frame_boutons.pack(pady=10)
 
 #Canvas simple
-canvas = tk.Canvas(frame_canvas, width=colonnes * taille_case, height=(lignes + 1) * taille_case)
+canvas = tk.Canvas(frame_canvas, width=colonnes * taille_case, height=lignes * taille_case)
 canvas.pack()
+canvas.create_image(0, 0, anchor="nw", image=grille_theme)
+
 
 # Création grille de base donc vide
 def creation_grille():
@@ -78,36 +88,52 @@ message_label.pack(pady=10)
 
 def tracer_grille(grille):
     canvas.delete("all") 
-    # Base de la grille
+
+    # Afficher la grille de fond
+    canvas.create_image(0, 0, anchor="nw", image=grille_theme)
+
+
+    # Dessiner les lignes horizontales
+    for j in range(lignes + 1):  # +1 pour inclure la dernière ligne
+        canvas.create_line(
+            0, j * taille_case + taille_case,  # Début de la ligne
+            colonnes * taille_case, j * taille_case + taille_case,  # Fin de la ligne
+            fill="black", width=2  # Couleur et épaisseur de la ligne
+        )
+
+    # Dessiner les lignes verticales
+    for i in range(colonnes + 1):  # +1 pour inclure la dernière colonne
+        canvas.create_line(
+            i * taille_case, 0,  # Début de la ligne
+            i * taille_case, (lignes + 1) * taille_case,  # Fin de la ligne
+            fill="black", width=2  # Couleur et épaisseur de la ligne
+        )
+
+    # Dessiner les emplacements vides (ovales noirs)
     for i in range(colonnes):
         for j in range(lignes):
-            # Dessiner les rectangles de la grille
-            canvas.create_rectangle(
-                i * taille_case, j * taille_case + taille_case,
-                (i + 1) * taille_case, (j + 1) * taille_case + taille_case,
-                fill="blue", outline="black"
-            )
-            # Dessiner les emplacements vides (ovales noirs)
             canvas.create_oval(
-                i * taille_case + 10, j * taille_case + taille_case + 10,
-                (i + 1) * taille_case - 10, (j + 1) * taille_case + taille_case - 10,
+                i * taille_case + 10, j * taille_case + 10,
+                (i + 1) * taille_case - 10, (j + 1) * taille_case - 10,
                 fill="black"
             )
+
     # Dessiner les jetons
     for i in range(colonnes):
         for j in range(lignes):
             if grille[j][i] == 1:  # Joueur 1 (rouge)
                 canvas.create_image(
                     i * taille_case + taille_case // 2,
-                    (lignes - j - 1) * taille_case + taille_case + taille_case // 2,
+                    (lignes - j - 1) * taille_case + taille_case // 2,
                     image=jeton_joueur_1
                 )
             elif grille[j][i] == 2:  # Joueur 2 (image)
                 canvas.create_image(
                     i * taille_case + taille_case // 2,
-                    (lignes - j - 1) * taille_case + taille_case + taille_case // 2,
+                    (lignes - j - 1) * taille_case + taille_case // 2,
                     image=jeton_joueur_2
                 )
+
 
 
 
@@ -181,7 +207,7 @@ def reset_grille():
     cmpt = 0  # clic 0
     historique_coups.clear()  #pour éviter historique garde ancien coups
     tracer_grille(grille)
-    message_label.config(text="Grille bien réinitialisée", fg="orange")
+    message_label.config(text="Grille bien réinitialisée", font=("Comic Sans MS", 12, "bold"), fg = "#a97c11", bg = "#ffd88e")
     fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
 
 
@@ -218,13 +244,13 @@ def charger_partie():
 
 
 #Tous les bontons a afficher : 
-bouton_reset = tk.Button(frame_boutons, text="Reset", command=reset_grille)
+bouton_reset = tk.Button(frame_boutons, text="Reset", font=("Comic Sans MS", 10, "bold"), bg = "#a97c11", fg = "#ffd88e", command=reset_grille)
 bouton_reset.pack(side=tk.LEFT, padx=10)
 
-bouton_sauvegarder = tk.Button(frame_boutons, text="Sauvegarder", command=sauvegarder_partie)
+bouton_sauvegarder = tk.Button(frame_boutons, text="Sauvegarder", font=("Comic Sans MS", 10, "bold"), bg = "#a97c11", fg = "#ffd88e", command=sauvegarder_partie)
 bouton_sauvegarder.pack(side=tk.LEFT, padx=10)
 
-bouton_charger = tk.Button(frame_boutons, text="Charger", command=charger_partie)
+bouton_charger = tk.Button(frame_boutons, text="Charger", font=("Comic Sans MS", 10, "bold"), bg = "#a97c11", fg = "#ffd88e", command=charger_partie)
 bouton_charger.pack(side=tk.LEFT, padx=10)
 
 
