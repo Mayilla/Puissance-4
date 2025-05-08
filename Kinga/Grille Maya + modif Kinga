@@ -11,13 +11,15 @@ import random
 
 historique_coups = []
 
+nom_J1 = "Jean"   #Juste pour tester pour l'intant à modif pour relier avec page inscription
+nom_J2 = "Pierre"    
+
+
 #https://docs.python.org/3/library/tkinter.html
 
 # Taille de la grille de jeux
 lignes = 6
 colonnes = 7
-
-
 
 
 # Couleurs utilisées : 
@@ -59,8 +61,8 @@ victoires_joueur2 = 0
 label_resultat = tk.Label(fenetre_grillejeux, text="Que le meilleur gagne ! 🎯", font=("Impact", 50))
 label_resultat.pack(pady=(30, 0))
 
-prochain_joueur = "Rouge" if (cmpt + manche) % 2 == 0 else "Jaune"
-couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
+prochain_joueur = nom_J1 if (cmpt + manche) % 2 == 0 else nom_J2
+couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
 label_joueur = tk.Label(fenetre_grillejeux, text = f"{prochain_joueur} commence !", font=("Impact", 20), fg = couleur_texte)
 label_joueur.pack()
 
@@ -156,11 +158,11 @@ def clic_canvas(event):
         if gagnant == 1:
             global victoires_joueur1
             victoires_joueur1 += 1
-            label_resultat.config(text=f"Rouge a gagné ! 🎉", fg="red")
+            label_resultat.config(text=f"{nom_J1} a gagné ! 🎉", fg="red")
         else:
             global victoires_joueur2
             victoires_joueur2 += 1
-            label_resultat.config(text=f"Jaune a gagné ! 🎉", fg="#FFD700")
+            label_resultat.config(text=f"{nom_J2} a gagné ! 🎉", fg="#FFD700")
         
         canvas.unbind("<Button-1>")         # Désactive les clics
         label_joueur.config(text="")
@@ -173,9 +175,10 @@ def clic_canvas(event):
 
 
     if gagnant == 0 and not np.all(grille != 0):
-        prochain_joueur = "Rouge" if (cmpt + manche) % 2 == 0 else "Jaune"
-        couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
+        prochain_joueur= nom_J1 if (cmpt + manche) % 2 == 0 else nom_J2
+        couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
         label_resultat.config(text=f"À {prochain_joueur} de jouer !", fg=couleur_texte)
+
     
     label_joueur.config(text = "")
 
@@ -198,11 +201,11 @@ def reset_grille():
     message_label.config(text="Grille bien réinitialisée", fg="orange")
     fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
     canvas.bind("<Button-1>", clic_canvas)      # On réactive les clics
-    label_resultat.config(                      # Efface le message de victoire
-    text=f"Rouge - {victoires_joueur1}  ||  Jaune - {victoires_joueur2}",
-        fg="black"
+    label_resultat.config(                      
+    text=f"{nom_J1} - {victoires_joueur1}  ||  {nom_J2} - {victoires_joueur2}",
+    fg="black"
     )
-    prochain_joueur = "Rouge" if (cmpt + manche) % 2 == 0 else "Jaune"
+    prochain_joueur = nom_J1 if (cmpt + manche) % 2 == 0 else nom_J2
     couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
     label_joueur.config(text = f"{prochain_joueur} commence !", fg = couleur_texte)
 
@@ -249,8 +252,9 @@ def nouvelle_partie():
     tracer_grille(grille)
     canvas.bind("<Button-1>", clic_canvas)
     label_resultat.config(text="Que le meilleur gagne ! 🎯", fg="black")
-    prochain_joueur = "Rouge" if (cmpt + manche) % 2 == 0 else "Jaune"
-    couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
+    label_resultat.config(text=f"{nom_J1} - {victoires_joueur1}  ||  {nom_J2} - {victoires_joueur2}", fg="black")
+    prochain_joueur = nom_J1 if (cmpt + manche) % 2 == 0 else nom_J2
+    couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
     label_joueur.config(text = f"{prochain_joueur} commence !", fg = couleur_texte)
 
 def check_gagnant(grille):
