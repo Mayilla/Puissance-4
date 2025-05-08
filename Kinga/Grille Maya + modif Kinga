@@ -11,15 +11,13 @@ import random
 
 historique_coups = []
 
-nom_J1 = "Jean"   #Juste pour tester pour l'intant à modif pour relier avec page inscription
-nom_J2 = "Pierre"    
-
-
 #https://docs.python.org/3/library/tkinter.html
 
 # Taille de la grille de jeux
 lignes = 6
 colonnes = 7
+
+
 
 
 # Couleurs utilisées : 
@@ -52,17 +50,19 @@ fenetre_grillejeux.state('zoomed')
 victoires_joueur1 = 0
 victoires_joueur2 = 0
 
-manche = random.randint(0, 1)
+alter = random.randint(0, 1)           # Pour l'alternance de qui c'est qui commence
 cmpt = 0 
-victoires_joueur2 = 0
+manche = 1
+
+nb_de_manches = 3
 
 
 # Label message gagnant dans le canvas
 label_resultat = tk.Label(fenetre_grillejeux, text="Que le meilleur gagne ! 🎯", font=("Impact", 50))
 label_resultat.pack(pady=(30, 0))
 
-prochain_joueur = nom_J1 if (cmpt + manche) % 2 == 0 else nom_J2
-couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
+prochain_joueur = "Rouge" if (cmpt + alter) % 2 == 0 else "Jaune"
+couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
 label_joueur = tk.Label(fenetre_grillejeux, text = f"{prochain_joueur} commence !", font=("Impact", 20), fg = couleur_texte)
 label_joueur.pack()
 
@@ -128,7 +128,7 @@ def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
     if colonne_clique >= colonnes:
         return grille, cmpt
 
-    if (cmpt + manche) % 2 == 0: 
+    if (cmpt + alter) % 2 == 0: 
         J = 1 #là sera rouge
     else:  
         J = 2 #là sera jaune 
@@ -158,12 +158,12 @@ def clic_canvas(event):
         if gagnant == 1:
             global victoires_joueur1
             victoires_joueur1 += 1
-            label_resultat.config(text=f"{nom_J1} a gagné ! 🎉", fg="red")
+            label_resultat.config(text=f"Rouge a gagné ! 🎉", fg="red")
         else:
             global victoires_joueur2
             victoires_joueur2 += 1
-            label_resultat.config(text=f"{nom_J2} a gagné ! 🎉", fg="#FFD700")
-        
+            label_resultat.config(text=f"Jaune a gagné ! 🎉", fg="#FFD700")
+
         canvas.unbind("<Button-1>")         # Désactive les clics
         label_joueur.config(text="")
 
@@ -173,12 +173,19 @@ def clic_canvas(event):
         label_resultat.config(text="Match nul ! 😅", fg = "black")
         canvas.unbind("<Button-1>")         # Désactive les clics
 
+    if manche == nb_de_manches :
+        bouton_reset.pack_forget()
+        if victoires_joueur1 > victoires_joueur2:
+            label_resultat.config(text=f"Rouge a gagné la partie ! 🏆🏆", fg="red")
+        elif victoires_joueur1 < victoires_joueur2:
+            label_resultat.config(text=f"Jaune a gagné la partie ! 🏆🏆", fg="#FFD700")
+        elif victoires_joueur1 == victoires_joueur2:
+            label_resultat.config(text=f"Égalité ! ⚖️")
 
     if gagnant == 0 and not np.all(grille != 0):
-        prochain_joueur= nom_J1 if (cmpt + manche) % 2 == 0 else nom_J2
-        couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
+        prochain_joueur = "Rouge" if (cmpt + alter) % 2 == 0 else "Jaune"
+        couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
         label_resultat.config(text=f"À {prochain_joueur} de jouer !", fg=couleur_texte)
-
     
     label_joueur.config(text = "")
 
@@ -192,8 +199,9 @@ tracer_grille(grille)
 #Remettre a zero la grille à chaque ouverture de la fenetre :
 
 def reset_grille():
-    global grille, cmpt, historique_coups, manche
+    global grille, cmpt, historique_coups, alter, manche
     manche += 1
+    alter += 1
     grille = creation_grille()  
     cmpt = 0  # clic 0
     historique_coups.clear()  #pour éviter historique garde ancien coups
@@ -201,11 +209,11 @@ def reset_grille():
     message_label.config(text="Grille bien réinitialisée", fg="orange")
     fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
     canvas.bind("<Button-1>", clic_canvas)      # On réactive les clics
-    label_resultat.config(                      
-    text=f"{nom_J1} - {victoires_joueur1}  ||  {nom_J2} - {victoires_joueur2}",
-    fg="black"
+    label_resultat.config(                      # Efface le message de victoire
+    text=f"Rouge - {victoires_joueur1}  ||  Jaune - {victoires_joueur2}",
+        fg="black"
     )
-    prochain_joueur = nom_J1 if (cmpt + manche) % 2 == 0 else nom_J2
+    prochain_joueur = "Rouge" if (cmpt + alter) % 2 == 0 else "Jaune"
     couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
     label_joueur.config(text = f"{prochain_joueur} commence !", fg = couleur_texte)
 
@@ -243,18 +251,20 @@ def charger_partie():
     fenetre_grillejeux.after(3000, lambda: message_label.config(text=""))
 
 def nouvelle_partie():
-    global grille, cmpt, victoires_joueur1, victoires_joueur2, manche
-    manche = random.randint(0, 1)
+    global grille, cmpt, victoires_joueur1, victoires_joueur2, alter, manche
+    manche = 1
+    alter = random.randint(0, 1)
     grille = creation_grille()
     cmpt = 0
     victoires_joueur1 = 0
     victoires_joueur2 = 0
     tracer_grille(grille)
     canvas.bind("<Button-1>", clic_canvas)
+    bouton_reset.pack(side=tk.LEFT, padx=10)
+    fenetre_grillejeux.update_idletasks()           # raffraichissement, sinon on le voit pas
     label_resultat.config(text="Que le meilleur gagne ! 🎯", fg="black")
-    label_resultat.config(text=f"{nom_J1} - {victoires_joueur1}  ||  {nom_J2} - {victoires_joueur2}", fg="black")
-    prochain_joueur = nom_J1 if (cmpt + manche) % 2 == 0 else nom_J2
-    couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
+    prochain_joueur = "Rouge" if (cmpt + alter) % 2 == 0 else "Jaune"
+    couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
     label_joueur.config(text = f"{prochain_joueur} commence !", fg = couleur_texte)
 
 def check_gagnant(grille):
@@ -285,18 +295,18 @@ def check_gagnant(grille):
     return 0  # pas de gagnant
 
 
-#Tous les bontons a afficher : 
-bouton_reset = tk.Button(frame_boutons, text="Nettoyer la grille", command=reset_grille)
-bouton_reset.pack(side=tk.LEFT, padx=10)
-
-bouton_nvl_partie = tk.Button(frame_boutons, text = "Recommencer", command = nouvelle_partie)
-bouton_nvl_partie.pack(side=tk.LEFT, padx=10)
-
+# Tous les bontons a afficher : 
 bouton_sauvegarder = tk.Button(frame_boutons, text="Sauvegarder", command=sauvegarder_partie)
 bouton_sauvegarder.pack(side=tk.LEFT, padx=10)
 
 bouton_charger = tk.Button(frame_boutons, text="Charger", command=charger_partie)
 bouton_charger.pack(side=tk.LEFT, padx=10)
+
+bouton_nvl_partie = tk.Button(frame_boutons, text = "Nouvelle partie", command = nouvelle_partie)
+bouton_nvl_partie.pack(side=tk.LEFT, padx=10)
+
+bouton_reset = tk.Button(frame_boutons, text="Prochaine manche", command=reset_grille)
+bouton_reset.pack(side=tk.LEFT, padx=10)
 
 
 fenetre_grillejeux.mainloop()
