@@ -433,7 +433,7 @@ def f_fenetre_grille_jeux():
     if 'theme_grille_selectionne' in globals():
         grille_theme_selectionne = theme_grille_selectionne
     else:
-        grille_theme_selectionne = "nature"  # Valeur par défaut
+        grille_theme_selectionne = "bleu"  # Valeur par défaut
 
     if 'theme_jetons_selectionne' in globals():
         theme_jetons_selectionne = theme_jetons_selectionne
