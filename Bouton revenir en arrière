@@ -9,9 +9,9 @@ from PIL import Image, ImageTk
 
 #Bouton pour revenir en arrière
 def annuler_action():
-    global grille, J, historique_jeux, , jeton_rouge, jeton_jaune, case_vide
-    if historique_jeux:
-        dernier_coup = historique_jeux.pop() #derniere action par J + remet bonne grille avant
+    global grille, J, historique_coups, , jeton_rouge, jeton_jaune, case_vide
+    if historique_coups:
+        dernier_coup = historique_coups.pop() #derniere action par J + remet bonne grille avant
         grille[dernier_coup[0]][dernier_coup[1]] = 0 
 
        ## (a voir/ mdodif en fonction code Kinga)
