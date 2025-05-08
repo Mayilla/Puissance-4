@@ -24,7 +24,7 @@ Etapes / points importants :
 
 ************ QUI FAIT QUOI : (pour les 4 pages) ***************************************************************************************
 
-    - Kinga : Menu du jeux + fonction coup gagnant(donc si alignement)/coup perdant/match nul +
+    - Kinga : Menu du jeu + fonction coup gagnant(donc si alignement)/coup perdant/match nul + bouton nouvelle partie + affichage des scores + à qui c'est le tour de jouer
     - Lois : Page de parametres/ visuel theme + code changement taille de la grille et de son theme +
     - Rehan : Règles de jeux + fonction sauvegarder et charger une partie + afficher/enregistrer score + finir bouton annuler un coup
     - Maya : Grille de jeux + ajout jetons + (dessin pair jeton personalisé) + bouton renitialiser grille + fonction alternance jeux avec 2 joueurs + entrer/ inscription noms joueurs + (base fonction annule action) + dase save/charger simple
