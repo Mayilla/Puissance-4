@@ -526,7 +526,7 @@ def f_fenetre_grille_jeux():
     manche = random.randint(0,1)
     cmpt = 0
 
-    nb_de_manches == 1              # À MODIFIER 
+    nbr_de_manches == 1              # À MODIFIER 
 
     # Label message gagnant dans le canvas
     label_resultat = tk.Label(fenetre_grillejeux, text="Que le meilleur gagne ! 🎯", font=("Impact", 50))
@@ -666,7 +666,7 @@ def f_fenetre_grille_jeux():
             canvas.unbind("<Button-1>")
             label_joueur.config(text='')
 
-        if manche == nb_de_manches :
+        if manche == nbr_de_manches :
             bouton_reset.pack_forget()
             if victoires_joueur_1 > victoires_joueur_2:
                 label_resultat.config(text=f"{nom_j1} a gagné la partie ! 🎉", font=("Impact", 50), fg="red")
