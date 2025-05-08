@@ -35,8 +35,23 @@ label_fond.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 def quitter():
     fenetre_nom_joueur.destroy()
 
+
+    # Fonction pour vérifier si noms validés
+def valider_noms():
+    if texte_joueur_1 == "-" or texte_joueur_2 == "-":
+        print("Veuillez entrer les noms des joueurs.")
+        return False
+    return True
+
     # Fonction lancer la partie (relie la page de jeu)
+
+message_label = tk.Label(fenetre_nom_joueur, text="", font=("Arial", 14), fg="green", bg = "#ffd88e")
+message_label.place(relx=0.5, y=590, anchor = "center")
 def lancer_partie():
+    # Si noms pas validés
+    if valider_noms() == False:
+        message_label.config(text="Veuillez entrer les noms des joueurs", font=("Comic Sans MS", 12, "bold"), fg = "#a97c11", bg = "#ffd88e")
+        return
     print("Lancer la partie !")
     fenetre_nom_joueur.destroy()
 
