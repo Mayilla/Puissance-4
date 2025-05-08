@@ -79,7 +79,7 @@ nom_j2 = None
 
 
 def f_fenetre_nombre_joueur():
-    global joueur_1, joueur_2 , texte_joueur_1, texte_joueur_2, nom_j1, nom_j2
+    global joueur_1, joueur_2, texte_joueur_1, texte_joueur_2, nom_j1, nom_j2
 
     # Création de la fenêtre
     fenetre_nom_joueur = tk.Toplevel()
@@ -664,21 +664,19 @@ def f_fenetre_grille_jeux():
                 label_resultat.config(text=f"{nom_j2} a gagné ! 🎉", font=("Impact", 50), fg="#FFD700")
 
             canvas.unbind("<Button-1>")
-            label_joueur.config(text='')
+            label_joueur.config(text="")
 
-        if manche == nbr_de_manches :
-            bouton_reset.pack_forget()
-            if victoires_joueur_1 > victoires_joueur_2:
-                label_resultat.config(text=f"{nom_j1} a gagné la partie ! 🎉", font=("Impact", 50), fg="red")
-                lancer_confettis()
-            elif victoires_joueur_2 > victoires_joueur_1:
-                label_resultat.config(text=f"{nom_j2} a gagné la partie ! 🎉", font=("Impact", 50), fg="#FFD700")
-                lancer_confettis()
-            elif victoires_joueur_1 == victoires_joueur_2:
-                label_resultat.config(text="Match nul ! 😅", font=("Impact", 50), fg="black")
-                lancer_confettis()
-                
-
+            if manche == nbr_de_manches :
+                bouton_reset.pack_forget()
+                if victoires_joueur_1 > victoires_joueur_2:
+                    label_resultat.config(text=f"{nom_j1} a gagné la partie ! 🎉", font=("Impact", 50), fg="red")
+                    lancer_confettis()
+                elif victoires_joueur_2 > victoires_joueur_1:
+                    label_resultat.config(text=f"{nom_j2} a gagné la partie ! 🎉", font=("Impact", 50), fg="#FFD700")
+                    lancer_confettis()
+                elif victoires_joueur_1 == victoires_joueur_2:
+                    label_resultat.config(text="Match nul ! 😅", font=("Impact", 50), fg="black")
+                    lancer_confettis()
 
         # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
         elif np.all(grille != 0):
