@@ -114,13 +114,12 @@ def tracer_grille(grille):
 # doc thinker event : https://docs.python.org/3/library/tkinter.html#bindings-and-events
 
 
-# Kinga : J'ai modifié cette fonction comme ca si y a une colonne remplie il se passe rien qd on appuie
 def ajouter_jeton(grille, col, J):
-    for i in range(0, lignes):
-        if grille[i][col] == 0:
-            grille[i][col] = J
-            return True             # Jeton placé
-    return False                    # Si colonne remplie
+    for i in range(0, lignes):              # Va du bas de la grille vers le haut
+        if grille[i][col] == 0:             # Si la case est vide
+            grille[i][col] = J              # Un jeton est placé
+            return True
+    return False                            # Si la colonne est pleine, ne rien faire
 
 
 def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
@@ -169,12 +168,12 @@ def clic_canvas(event):
 
 
     # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
-    elif np.all(grille != 0):
+    elif np.all(grille != 0):               # Vérifie si toutes les cases sont prises
         label_resultat.config(text="Match nul ! 😅", fg = "black")
         canvas.unbind("<Button-1>")         # Désactive les clics
 
     if manche == nb_de_manches :
-        bouton_reset.pack_forget()
+        bouton_reset.pack_forget()          # On enlève le bouton "Prochaine manche"
         if victoires_joueur1 > victoires_joueur2:
             label_resultat.config(text=f"Rouge a gagné la partie ! 🏆🏆", fg="red")
         elif victoires_joueur1 < victoires_joueur2:
@@ -182,30 +181,27 @@ def clic_canvas(event):
         elif victoires_joueur1 == victoires_joueur2:
             label_resultat.config(text=f"Égalité ! ⚖️")
 
-    if gagnant == 0 and not np.all(grille != 0):
+    if gagnant == 0 and not np.all(grille != 0):        # S'il n'y a pas de gagnant et que la grille n'est pas remplie
         prochain_joueur = "Rouge" if (cmpt + alter) % 2 == 0 else "Jaune"
         couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
         label_resultat.config(text=f"À {prochain_joueur} de jouer !", fg=couleur_texte)
     
     label_joueur.config(text = "")
 
-
 cmpt = 0 #début compteur
-
-canvas.bind("<Button-1>", clic_canvas)
-
-tracer_grille(grille)
+canvas.bind("<Button-1>", clic_canvas)          # On relie le bouton à la fonction comme la partie continue
+tracer_grille(grille)                           # Mise à jour de la grille
 
 #Remettre a zero la grille à chaque ouverture de la fenetre :
 
 def reset_grille():
     global grille, cmpt, historique_coups, alter, manche
-    manche += 1
-    alter += 1
+    manche += 1                 # Incrémentation pour vérifier quand nb de manches = manche 
+    alter += 1                  # Comme ca à la prochaine manche c'est l'autre joueur qui commence
     grille = creation_grille()  
     cmpt = 0  # clic 0
-    historique_coups.clear()  #pour éviter historique garde ancien coups
-    tracer_grille(grille)
+    historique_coups.clear()    #pour éviter historique garde ancien coups
+    tracer_grille(grille)       # Mise à jour de la grille
     message_label.config(text="Grille bien réinitialisée", fg="orange")
     fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
     canvas.bind("<Button-1>", clic_canvas)      # On réactive les clics
@@ -252,16 +248,16 @@ def charger_partie():
 
 def nouvelle_partie():
     global grille, cmpt, victoires_joueur1, victoires_joueur2, alter, manche
-    manche = 1
-    alter = random.randint(0, 1)
+    manche = 1                          # C'est la première manche de nouveau
+    alter = random.randint(0, 1)        # Celui qui commence est choisit aléatoirement
     grille = creation_grille()
     cmpt = 0
     victoires_joueur1 = 0
     victoires_joueur2 = 0
     tracer_grille(grille)
     canvas.bind("<Button-1>", clic_canvas)
-    bouton_reset.pack(side=tk.LEFT, padx=10)
-    fenetre_grillejeux.update_idletasks()           # raffraichissement, sinon on le voit pas
+    bouton_reset.pack(side=tk.LEFT, padx=10)        # On remet le bouton "Prochaine manche"
+    fenetre_grillejeux.update_idletasks()           # Raffraichissement, sinon on le voit pas
     label_resultat.config(text="Que le meilleur gagne ! 🎯", fg="black")
     prochain_joueur = "Rouge" if (cmpt + alter) % 2 == 0 else "Jaune"
     couleur_texte = "red" if prochain_joueur == "Rouge" else "#FFD700"
@@ -314,3 +310,4 @@ fenetre_grillejeux.mainloop()
 
 ###########################################################################################################
 
+# Perfecto
