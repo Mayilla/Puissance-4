@@ -488,9 +488,9 @@ def f_fenetre_grille_jeux():
         jeton_joueur_2 = Image.open("Jeton perso Loïs-Maya.png").resize((taille_case - 19, taille_case - 19))
         jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
     elif theme_jetons_selectionne == "robot":
-        jeton_joueur_1 = Image.open("Thème robot jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_1 = Image.open("Thème robot 1 jetons.png").resize((taille_case - 19, taille_case - 19))
         jeton_joueur_1 = ImageTk.PhotoImage(jeton_joueur_1)
-        jeton_joueur_2 = Image.open("Thème robot jetons.png").resize((taille_case - 19, taille_case - 19))
+        jeton_joueur_2 = Image.open("Thème robot 2 jetons.png").resize((taille_case - 19, taille_case - 19))
         jeton_joueur_2 = ImageTk.PhotoImage(jeton_joueur_2)
 
 
@@ -522,17 +522,19 @@ def f_fenetre_grille_jeux():
     # Compteur de victoires
     victoires_joueur_1 = 0
     victoires_joueur_2 = 0
-    manche = random.randint(0,1)
+    alter = random.randint(0,1)
     cmpt = 0
-    manches_jouées = 0
-
+    manche = 1
+    alter = random.randint(0,1)
+    nbr_de_manches = 3
+    
+    
     # Label message gagnant dans le canvas
-    label_resultat = tk.Label(fenetre_grillejeux, text="Que le meilleur gagne ! 🎯", font=("Impact", 50))
+    label_resultat = tk.Label(fenetre_grillejeux, text="Que le meilleur gagne ! 🎯", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
     label_resultat.pack(pady=(30, 0))
 
-    prochain_joueur = nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
-    couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
-    label_joueur = tk.Label(fenetre_grillejeux, text = f"{prochain_joueur} commence !", font=("Impact", 20), fg = couleur_texte)
+    prochain_joueur = nom_j1 if (cmpt + alter) % 2 == 0 else nom_j2
+    label_joueur = tk.Label(fenetre_grillejeux, text = f"{prochain_joueur} commence !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
     label_joueur.pack()
 
 
@@ -632,7 +634,7 @@ def f_fenetre_grille_jeux():
         if colonne_clique >= colonnes:
             return grille, cmpt
         
-        if (cmpt + manche) % 2 == 0:
+        if (cmpt + alter) % 2 == 0:
             J = 1 #là sera joueur 1
         else:  
             J = 2 #là sera joueur 2
@@ -647,7 +649,7 @@ def f_fenetre_grille_jeux():
 
     #pour gérer le nbr de clic/alternance
     def clic_canvas(event):
-        global grille, cmpt, victoires_joueur_1, victoires_joueur_2, nbr_de_manches, manche, manches_jouées
+        global grille, cmpt, victoires_joueur_1, victoires_joueur_2, nbr_de_manches, alter, manches_jouées
 
         # On joue le coup et on vérifie si il y a un gagnant
         grille, cmpt = alternance_joueur(event, grille, taille_case, colonnes, cmpt)
@@ -657,7 +659,7 @@ def f_fenetre_grille_jeux():
             if gagnant == 1:
                 global victoires_joueur_1
                 victoires_joueur_1 += 1
-                label_resultat.config(text=f"{nom_j1} a gagné ! 🎉", font=("Impact", 50), fg="red")
+                label_resultat.config(text=f"{nom_j1} a gagné ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
             else:
                 global victoires_joueur_2
                 victoires_joueur_2 += 1
@@ -668,30 +670,27 @@ def f_fenetre_grille_jeux():
 
             # Incrémenter le nombre de manches jouées
             manches_jouées += 1
+              
+
+        # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
+        elif np.all(grille != 0):
+            label_resultat.config(text="Match nul ! 😅", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
+            canvas.unbind("<Button-1>")         # Désactive les clics
 
         if manches_jouées == nbr_de_manches :
             bouton_reset.pack_forget()
             if victoires_joueur_1 > victoires_joueur_2:
-                label_resultat.config(text=f"{nom_j1} a gagné la partie ! 🎉", font=("Impact", 50), fg="red")
-                lancer_confettis()
+                label_resultat.config(text=f"{nom_j1} a gagné la partie ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
             elif victoires_joueur_2 > victoires_joueur_1:
-                label_resultat.config(text=f"{nom_j2} a gagné la partie ! 🎉", font=("Impact", 50), fg="#FFD700")
-                lancer_confettis()
+                label_resultat.config(text=f"{nom_j2} a gagné la partie ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
             elif victoires_joueur_1 == victoires_joueur_2:
-                label_resultat.config(text="Match nul ! 😅", font=("Impact", 50), fg="black")
-                
+                label_resultat.config(text="Match nul ! 😅", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
 
-
-        # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
-        elif np.all(grille != 0):
-            label_resultat.config(text="Match nul ! 😅", fg = "black")
-            canvas.unbind("<Button-1>")         # Désactive les clics
 
 
         if gagnant == 0 and not np.all(grille != 0):
-            prochain_joueur= nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
-            couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
-            label_resultat.config(text=f"À {prochain_joueur} de jouer !", fg=couleur_texte)
+            prochain_joueur= nom_j1 if (cmpt + alter) % 2 == 0 else nom_j2
+            label_resultat.config(text=f"À {prochain_joueur} de jouer !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
 
         
         label_joueur.config(text = "")
@@ -701,33 +700,15 @@ def f_fenetre_grille_jeux():
         canvas.bind("<Button-1>", clic_canvas)  # Lier le clic gauche de la souris à la fonction clic_canvas
         tracer_grille(grille)  # Tracer la grille initiale
 
-        confettis = []
-
-        def animer_confettis():
-            for confetti, vitesse in confettis:
-                canvas.move(confetti, 0, vitesse)                   # x = 0, y = vitesse
-            canvas.after(50, animer_confettis)                      # Rappelle la fonction tte les 50ms
-            # https://sites.google.com/site/pythonpasapas/modules/tkinter/tkinter-methodes/tkinter-after -> pour le .after
-
-        def lancer_confettis():
-            global confettis
-            for i in range(120):                                     # 70 confettis
-                x = random.randint(0, colonnes * taille_case)       # Position aléatoire
-                y = random.randint(0, 50)
-                r = random.randint(5, 15)
-                couleur = random.choice(["red", "yellow", "green", "light green", "light blue", "orange", "purple","magenta", "pink"])
-                confetti = canvas.create_oval(x, y, x + r, y + r, fill=couleur, outline="")         # C'est des petits ronds
-                vitesse = random.randint(2, 13)                # vitesse en pixel par image
-                confettis.append((confetti, vitesse))          # (objet, vitesse)
-
-            animer_confettis()
+        
 
         
     #Remettre à zéro la grille à chaque ouverture de la fenêtre :
 
     def reset_grille():
-        global grille, cmpt, historique_coups, manche
+        global grille, cmpt, historique_coups, manche, alter
         manche += 1
+        alter += 1
         grille = creation_grille()
         historique_coups.clear()  #pour éviter historique garde ancien coups
         cmpt = 0
@@ -735,10 +716,9 @@ def f_fenetre_grille_jeux():
         message_label.config(text="Grille bien réinitialisée", font=("Comic Sans MS", 12, "bold"), fg = "#a97c11", bg = "#ffd88e")
         fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
         canvas.bind("<Button-1>", clic_canvas)  # Réactiver le clic gauche de la souris
-        label_resultat.config(text=f"{nom_j1} - {victoires_joueur_1}  ||  {nom_j2} - {victoires_joueur_2}", fg="black")
-        prochain_joueur= nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
-        couleur_texte = "red" if prochain_joueur == nom_j1 else "#FFD700"
-        label_joueur.config(text=f"{prochain_joueur} commence !", font=("Impact", 20), fg=couleur_texte)
+        label_resultat.config(text=f"{nom_j1} - {victoires_joueur_1}  ||  {nom_j2} - {victoires_joueur_2}", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
+        prochain_joueur= nom_j1 if (cmpt + alter) % 2 == 0 else nom_j2
+        label_joueur.config(text=f"{prochain_joueur} commence !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
 
 
 
@@ -774,20 +754,20 @@ def f_fenetre_grille_jeux():
 
 
     def nouvelle_partie():
-        global grille, cmpt, victoires_joueur_1, victoires_joueur_2, manche
+        global grille, cmpt, victoires_joueur_1, victoires_joueur_2, manche, alter
         manche = random.randint(0, 1)
         grille = creation_grille()
+        alter = random.randint(0, 1)
         manche = 0
         cmpt = 0
         victoires_joueur_1 = 0
         victoires_joueur_2 = 0
         tracer_grille(grille)
         canvas.bind("<Button-1>", clic_canvas)
-        label_resultat.config(text="Que le meilleur gagne ! 🎯", fg="black")
-        label_resultat.config(text=f"{nom_j1} - {victoires_joueur_1}  ||  {nom_j2} - {victoires_joueur_2}", fg="black")
-        prochain_joueur = nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
-        couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
-        label_joueur.config(text = f"{prochain_joueur} commence !", fg = couleur_texte)
+        label_resultat.config(text="Que le meilleur gagne ! 🎯", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
+        label_resultat.config(text=f"{nom_j1} - {victoires_joueur_1}  ||  {nom_j2} - {victoires_joueur_2}", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
+        prochain_joueur = nom_j1 if (cmpt + alter) % 2 == 0 else nom_j2
+        label_joueur.config(text = f"{prochain_joueur} commence !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
 
 
     def check_gagnant(grille):
@@ -819,7 +799,7 @@ def f_fenetre_grille_jeux():
     
             # Bouton pour revenir en arrière
     def annuler_action():
-        global grille, historique_coups, cmpt, manche
+        global grille, historique_coups, cmpt, alter
         if historique_coups:
             dernier_coup = historique_coups.pop()  # Retirer le dernier coup de l'historique
             grille[dernier_coup[0]][dernier_coup[1]] = 0  # Réinitialiser la case dans la grille
@@ -828,9 +808,8 @@ def f_fenetre_grille_jeux():
             print("Dernier coup annulé.")
 
                 # Mettre à jour l'affichage pour indiquer quel joueur doit rejouer
-            prochain_joueur = nom_j1 if (cmpt + manche) % 2 == 0 else nom_j2
-            couleur_texte = "red" if (cmpt + manche) % 2 == 0 else "#FFD700"
-            label_resultat.config(text=f"À {prochain_joueur} de jouer !", fg=couleur_texte)
+            prochain_joueur = nom_j1 if (cmpt + alter) % 2 == 0 else nom_j2
+            label_resultat.config(text=f"À {prochain_joueur} de jouer !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
         
         else:
             print("Aucun coup à annuler.")
