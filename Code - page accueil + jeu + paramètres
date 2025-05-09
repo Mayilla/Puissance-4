@@ -771,7 +771,7 @@ def f_fenetre_grille_jeux():
 
                 # Mettre à jour l'affichage pour indiquer quel joueur doit rejouer
             prochain_joueur = nom_j1 if (cmpt + alter) % 2 == 0 else nom_j2
-            label_resultat.config(text=f"À {prochain_joueur} de jouer !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
+            label_joueur.config(text=f"À {prochain_joueur} de jouer !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
         
         else:
             print("Aucun coup à annuler.")
