@@ -117,6 +117,7 @@ def f_fenetre_nombre_joueur():
         if valider_noms() == False:
             message_label.config(text="Veuillez entrer les noms des joueurs", font=("Comic Sans MS", 12, "bold"), fg = "#a97c11", bg = "#ffd88e")
             return
+
         print("Lancer la partie !")
         fenetre_nom_joueur.destroy()
         f_fenetre_grille_jeux()
@@ -212,57 +213,41 @@ def f_fenetre_nombre_joueur():
             champ.insert(0, texte)
 
 
-        # Fonction pour récupérer la valeur du curseur
-    def valider_nbr_manches():
-        global nbr_de_manches
-        nbr_de_manches = curseur_nbr_parties.get()
-        print(f"Nombre de manches sélectionné : {nbr_de_manches}")
-
-
     # Contenu fenêtre du nombres de joueurs
     text_principal = tk.Label(fenetre_nom_joueur, text = "Nombre de joueurs", font = ("Comic Sans MS", 23, "bold"), bg = "#ffecaf", fg = "#a97c11")
-    text_principal.place(relx=0.5, y=70, anchor = "center")
+    text_principal.place(relx=0.5, y=90, anchor = "center")
 
     text_consignes = tk.Label(fenetre_nom_joueur, text = "Vous pouvez choisir vos noms de joueurs ainsi que le mode de jeu : 2 joueurs ou contre l'IA. \n Pour cela, cliquez sur les images.", font = ("Comic Sans MS", 18), bg = "#ffd88e", fg = "#a97c11")
-    text_consignes.place(relx=0.5, y=146, anchor = "center")
+    text_consignes.place(relx=0.5, y=180, anchor = "center")
 
     text_nom_joueurs = tk.Label(fenetre_nom_joueur, text = f"Joueur 1 : {texte_joueur_1} \n Joueur 2 : {texte_joueur_2}", font = ("Comic Sans MS", 18), bg = "#ffd88e", fg = "#a97c11")
-    text_nom_joueurs.place(relx=0.5, y=405, anchor = "center")
+    text_nom_joueurs.place(relx=0.5, y=470, anchor = "center")
 
 
         # Boutons pour choisir le type de joueur
     bouton_1 = tk.Button(fenetre_nom_joueur, text = "", width = 100, height = 100, image=image1, bd = 0, highlightthickness = 0, bg = '#ffd88e', compound = "center", command = changer_image)
-    bouton_1.place(relx=0.4, rely=0.37, anchor = "center")
+    bouton_1.place(relx=0.4, rely=0.45, anchor = "center")
 
     bouton_2 = tk.Button(fenetre_nom_joueur, text = "", width = 100, height = 100, image=image2, bd = 0, highlightthickness = 0, bg = '#ffd88e', compound = "center", command = changer_image_2)
-    bouton_2.place(relx=0.6, rely=0.37, anchor = "center")
+    bouton_2.place(relx=0.6, rely=0.45, anchor = "center")
 
 
         # Boutons pour enregistrer le texte
     bouton_enregistrer_1 = tk.Button(fenetre_nom_joueur, text = "Enregistrer", font =("Helvetica", 10), bg = "#a97c11", fg = "#ffecaf", command = lambda: enregistrer_texte_1(champ_texte_1.get()))
-    bouton_enregistrer_1.place(relx=0.4, rely=0.53, anchor = "center")
+    bouton_enregistrer_1.place(relx=0.4, rely=0.62, anchor = "center")
 
     bouton_enregistrer_2 = tk.Button(fenetre_nom_joueur, text = "Enregistrer", font = ("Helvetica", 10), bg = "#a97c11", fg = "#ffecaf", command = lambda: enregistrer_texte_2(champ_texte_2.get()))
-    bouton_enregistrer_2.place(relx=0.6, rely=0.53, anchor = "center")
+    bouton_enregistrer_2.place(relx=0.6, rely=0.62, anchor = "center")
 
 
         # Champs de saisie pour entrer du texte avec placeholders
     champ_texte_1 = tk.Entry(fenetre_nom_joueur, width = 20, font = ("Helvetica", 12), fg = "grey", bg = "#ffecaf")
-    champ_texte_1.place(relx=0.4, rely=0.48, anchor = "center")
+    champ_texte_1.place(relx=0.4, rely=0.57, anchor = "center")
     ajouter_indication(champ_texte_1, "Nom joueur 1")
 
     champ_texte_2 = tk.Entry(fenetre_nom_joueur, width = 20, font = ("Helvetica", 12), fg = "grey", bg = "#ffecaf")
-    champ_texte_2.place(relx=0.6, rely=0.48, anchor = "center")
+    champ_texte_2.place(relx=0.6, rely=0.57, anchor = "center")
     ajouter_indication(champ_texte_2, "Nom joueur 2")
-
-        # Boutons pour définir le nombre de parties 1 à 10
-    nbr_de_manches = 1
-    label_nbr_parties = tk.Label(fenetre_nom_joueur, text="Nombre de manches :", font=("Comic Sans MS", 12), bg="#ffd88e", fg="#a97c11")
-    label_nbr_parties.place(relx=0.5, rely=0.71, anchor="center")
-
-    curseur_nbr_parties = tk.Scale(fenetre_nom_joueur, from_=1, to=10, orient="horizontal", length=300, bg="#ffecaf", fg="#a97c11", font=("Comic Sans MS", 10), command=valider_nbr_manches)
-    curseur_nbr_parties.set(nbr_de_manches)  # Valeur par défaut
-    curseur_nbr_parties.place(relx=0.5, rely=0.77, anchor="center")
 
 
         # Bouton permettant de quitter la fenêtre (et de revenir à la fenêtre précédente dans un futur lointain)
@@ -272,7 +257,7 @@ def f_fenetre_nombre_joueur():
 
         # Bouton pour lancer la partie
     bouton_lancer_partie = tk.Button(fenetre_nom_joueur, text = "Lancer la partie", font = ("Comic Sans MS", 18, "bold"), fg = "#ffecaf", bg = "#a97c11", command = lancer_partie)
-    bouton_lancer_partie.place(relx=0.5, y=570, anchor = "center")
+    bouton_lancer_partie.place(relx=0.5, y=550, anchor = "center")
 
 
     # On affiche la fenêtre
@@ -524,9 +509,7 @@ def f_fenetre_grille_jeux():
     victoires_joueur_2 = 0
     alter = random.randint(0,1)
     cmpt = 0
-    manche = 1
-    alter = random.randint(0,1)
-    nbr_de_manches = 3
+    manche = 0
     
     
     # Label message gagnant dans le canvas
@@ -560,7 +543,7 @@ def f_fenetre_grille_jeux():
         grille = np.zeros((lignes, colonnes))
         return grille
 
-    creation_grille() 
+    grille = creation_grille() 
 
 
 
@@ -625,11 +608,14 @@ def f_fenetre_grille_jeux():
             if grille[i][col] == 0:
                 grille[i][col] = J
                 historique_coups.append((i, col, J))
+                prochain_joueur = nom_j2 if (cmpt + alter) % 2 == 0 else nom_j1
+                label_joueur.config(text=f"Au tour de {nom_j2 if J == 1 else nom_j1} !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
                 return True
         return False  # Si la colonne est pleine, ne rien faire
 
 
     def alternance_joueur(event, grille, taille_case, colonnes, cmpt):
+        global alter
         colonne_clique = event.x // taille_case  #position x de la souris donc la colonne choisie
         if colonne_clique >= colonnes:
             return grille, cmpt
@@ -649,7 +635,7 @@ def f_fenetre_grille_jeux():
 
     #pour gérer le nbr de clic/alternance
     def clic_canvas(event):
-        global grille, cmpt, victoires_joueur_1, victoires_joueur_2, nbr_de_manches, alter, manches_jouées
+        global grille, cmpt, victoires_joueur_1, victoires_joueur_2, manche, alter
 
         # On joue le coup et on vérifie si il y a un gagnant
         grille, cmpt = alternance_joueur(event, grille, taille_case, colonnes, cmpt)
@@ -657,62 +643,39 @@ def f_fenetre_grille_jeux():
 
         if gagnant != 0:
             if gagnant == 1:
-                global victoires_joueur_1
                 victoires_joueur_1 += 1
-                label_resultat.config(text=f"{nom_j1} a gagné ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
+                label_resultat.config(text=f"{nom_j1} a gagné cette manche ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
             else:
-                global victoires_joueur_2
                 victoires_joueur_2 += 1
-                label_resultat.config(text=f"{nom_j2} a gagné ! 🎉", font=("Impact", 50), fg="#FFD700")
+                label_resultat.config(text=f"{nom_j2} a gagné cette manche ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
 
             canvas.unbind("<Button-1>")
-            label_joueur.config(text="")
+            manche += 1
 
-            # Incrémenter le nombre de manches jouées
-            manches_jouées += 1
-              
 
-        # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
+    
+
+
+        # Vérifier si la grille est pleine
         elif np.all(grille != 0):
-            label_resultat.config(text="Match nul ! 😅", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
-            canvas.unbind("<Button-1>")         # Désactive les clics
-
-        if manches_jouées == nbr_de_manches :
-            bouton_reset.pack_forget()
-            if victoires_joueur_1 > victoires_joueur_2:
-                label_resultat.config(text=f"{nom_j1} a gagné la partie ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
-            elif victoires_joueur_2 > victoires_joueur_1:
-                label_resultat.config(text=f"{nom_j2} a gagné la partie ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
-            elif victoires_joueur_1 == victoires_joueur_2:
-                label_resultat.config(text="Match nul ! 😅", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
-
-
-
-        if gagnant == 0 and not np.all(grille != 0):
-            prochain_joueur= nom_j1 if (cmpt + alter) % 2 == 0 else nom_j2
-            label_resultat.config(text=f"À {prochain_joueur} de jouer !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
-
+            label_resultat.config(text="Grille pleine ! Match nul ! 😅", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
+            canvas.unbind("<Button-1>")
         
-        label_joueur.config(text = "")
-
-
-        cmpt = 0 #début compteur
-        canvas.bind("<Button-1>", clic_canvas)  # Lier le clic gauche de la souris à la fonction clic_canvas
-        tracer_grille(grille)  # Tracer la grille initiale
-
         
-
         
     #Remettre à zéro la grille à chaque ouverture de la fenêtre :
 
     def reset_grille():
         global grille, cmpt, historique_coups, manche, alter
+        # Variables
         manche += 1
         alter += 1
-        grille = creation_grille()
         historique_coups.clear()  #pour éviter historique garde ancien coups
         cmpt = 0
+        
+        grille = creation_grille()
         tracer_grille(grille)
+
         message_label.config(text="Grille bien réinitialisée", font=("Comic Sans MS", 12, "bold"), fg = "#a97c11", bg = "#ffd88e")
         fenetre_grillejeux.after(3000, lambda: message_label.config(text="")) #j'ai mis 3s pour pas que ça reste infiniment 
         canvas.bind("<Button-1>", clic_canvas)  # Réactiver le clic gauche de la souris
@@ -755,9 +718,8 @@ def f_fenetre_grille_jeux():
 
     def nouvelle_partie():
         global grille, cmpt, victoires_joueur_1, victoires_joueur_2, manche, alter
-        manche = random.randint(0, 1)
         grille = creation_grille()
-        alter = random.randint(0, 1)
+        alter = random.randint(0,1)
         manche = 0
         cmpt = 0
         victoires_joueur_1 = 0
