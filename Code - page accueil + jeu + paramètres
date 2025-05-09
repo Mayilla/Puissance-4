@@ -604,9 +604,9 @@ def f_fenetre_grille_jeux():
     # Fonction pour ajouter un jeton dans la grille
     def ajouter_jeton(grille, col, J):
         global historique_coups
-        for i in range(0, lignes):
-            if grille[i][col] == 0:
-                grille[i][col] = J
+        for i in range(0, lignes):          # Va du bas de la grille vers le haut
+            if grille[i][col] == 0:         # Si la case est vide
+                grille[i][col] = J          # Un jeton est placé
                 historique_coups.append((i, col, J))
                 prochain_joueur = nom_j2 if (cmpt + alter) % 2 == 0 else nom_j1
                 label_joueur.config(text=f"Au tour de {nom_j2 if J == 1 else nom_j1} !", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
@@ -649,8 +649,8 @@ def f_fenetre_grille_jeux():
                 victoires_joueur_2 += 1
                 label_resultat.config(text=f"{nom_j2} a gagné cette manche ! 🎉", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
 
-            canvas.unbind("<Button-1>")
-            manche += 1
+            canvas.unbind("<Button-1>")             # Désactive les clics
+            manche += 1                             # #https://sites.google.com/site/pythonpasapas/modules/tkinter/tkinter-methodes/tkinter-bind
 
 
     
@@ -659,7 +659,7 @@ def f_fenetre_grille_jeux():
         # Vérifier si la grille est pleine
         elif np.all(grille != 0):
             label_resultat.config(text="Grille pleine ! Match nul ! 😅", font=("Comic Sans MS", 23, "bold"), bg="#ffecaf", fg="#a97c11")
-            canvas.unbind("<Button-1>")
+            canvas.unbind("<Button-1>")             # Désactive les clics
         
         
         
@@ -669,7 +669,7 @@ def f_fenetre_grille_jeux():
         global grille, cmpt, historique_coups, manche, alter
         # Variables
         manche += 1
-        alter += 1
+        alter += 1             # Comme ca à la prochaine manche c'est l'autre joueur qui commence
         historique_coups.clear()  #pour éviter historique garde ancien coups
         cmpt = 0
         
@@ -719,7 +719,7 @@ def f_fenetre_grille_jeux():
     def nouvelle_partie():
         global grille, cmpt, victoires_joueur_1, victoires_joueur_2, manche, alter
         grille = creation_grille()
-        alter = random.randint(0,1)
+        alter = random.randint(0,1)     # Celui qui commence est choisit aléatoirement
         manche = 0
         cmpt = 0
         victoires_joueur_1 = 0
