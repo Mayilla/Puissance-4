@@ -444,11 +444,11 @@ def f_fenetre_grille_jeux():
     elif taille_selectionnee == "4":
         lignes = 6
         colonnes = 7
-        taille_case = 50
+        taille_case = 60
     elif taille_selectionnee == "5":
         lignes = 7
         colonnes = 8
-        taille_case = 70
+        taille_case = 50
 
 
     # Choix des jetons selon la sélection
