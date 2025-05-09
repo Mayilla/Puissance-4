@@ -1,5 +1,5 @@
 #Grille jeux + alternance jetons/joueurs + sauvegarde/charger partie Maya : 
-# + check gagnant/match nul + nouvelle partie + quelques modifs Kinga
+# + check gagnant/match nul + nouvelle partie + confettis + quelques modifs Kinga
 
 #biblio nécessaire
 import tkinter as tk
@@ -165,6 +165,18 @@ def clic_canvas(event):
 
         canvas.unbind("<Button-1>")         # Désactive les clics
         label_joueur.config(text="")
+        
+        if manche == nb_de_manches :
+            bouton_reset.pack_forget()          # On enlève le bouton "Prochaine manche"
+            if victoires_joueur1 > victoires_joueur2:
+                label_resultat.config(text=f"Rouge a gagné la partie ! 🏆🏆", fg="red")
+                lancer_confettis()
+            elif victoires_joueur1 < victoires_joueur2:
+                label_resultat.config(text=f"Jaune a gagné la partie ! 🏆🏆", fg="#FFD700")
+                lancer_confettis()
+            elif victoires_joueur1 == victoires_joueur2:
+                label_resultat.config(text=f"Égalité ! ⚖️")
+                lancer_confettis()
 
 
     # Vérifier si la grille est pleine et qu'il n'y a pas de gagnant -> Match nul
@@ -172,14 +184,7 @@ def clic_canvas(event):
         label_resultat.config(text="Match nul ! 😅", fg = "black")
         canvas.unbind("<Button-1>")         # Désactive les clics
 
-    if manche == nb_de_manches :
-        bouton_reset.pack_forget()          # On enlève le bouton "Prochaine manche"
-        if victoires_joueur1 > victoires_joueur2:
-            label_resultat.config(text=f"Rouge a gagné la partie ! 🏆🏆", fg="red")
-        elif victoires_joueur1 < victoires_joueur2:
-            label_resultat.config(text=f"Jaune a gagné la partie ! 🏆🏆", fg="#FFD700")
-        elif victoires_joueur1 == victoires_joueur2:
-            label_resultat.config(text=f"Égalité ! ⚖️")
+
 
     if gagnant == 0 and not np.all(grille != 0):        # S'il n'y a pas de gagnant et que la grille n'est pas remplie
         prochain_joueur = "Rouge" if (cmpt + alter) % 2 == 0 else "Jaune"
@@ -191,6 +196,26 @@ def clic_canvas(event):
 cmpt = 0 #début compteur
 canvas.bind("<Button-1>", clic_canvas)          # On relie le bouton à la fonction comme la partie continue
 tracer_grille(grille)                           # Mise à jour de la grille
+
+confettis = []
+
+def animer_confettis():
+    for confetti, vitesse in confettis:
+        canvas.move(confetti, 0, vitesse)                   # x = 0, y = vitesse
+    canvas.after(50, animer_confettis)                      # Rappelle la fonction tte les 50ms
+    # https://sites.google.com/site/pythonpasapas/modules/tkinter/tkinter-methodes/tkinter-after -> pour le .after
+
+def lancer_confettis():
+    for i in range(120):                                     # 70 confettis
+        x = random.randint(0, colonnes * taille_case)       # Position aléatoire
+        y = random.randint(0, 50)
+        r = random.randint(5, 15)
+        couleur = random.choice(["red", "yellow", "green", "light green", "light blue", "orange", "purple","magenta", "pink"])
+        confetti = canvas.create_oval(x, y, x + r, y + r, fill=couleur, outline="")         # C'est des petits ronds
+        vitesse = random.randint(2, 13)                # vitesse en pixel par image
+        confettis.append((confetti, vitesse))          # (objet, vitesse)
+
+    animer_confettis()
 
 #Remettre a zero la grille à chaque ouverture de la fenetre :
 
